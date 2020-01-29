@@ -35,7 +35,7 @@
     - Manage your host Docker from within the dev container on Linux, MacOS and Windows
 - Docker uses buildkit by default, with the latest Docker client binary.
 - Runs without root as `vscode` user but you can run Docker without sudo and can use sudo if needed
-- 'Minimal' size of **?MB**
+- 'Minimal' size of **187MB**
 - Extensible with docker-compose.yml
 - Compatible with `amd64`, `arm/v8` and `arm/v7`
 
@@ -67,9 +67,9 @@
 
 ### devcontainer.json
 
-- You can change the `"postCreateCommand"` to be relevant to your situation. In example it could be `go mod download && gofmt ./...` to combine two commands
+- You can change the `"postCreateCommand"` to be relevant to your situation. In example it could be `echo "downloading" && npm i` to combine two commands
 - You can change the extensions installed in the Docker image within the `"extensions"` array
-- Other Go settings can be changed or added in the `"settings"` object.
+- VScode settings can be changed or added in the `"settings"` object.
 
 ### docker-compose.yml
 
@@ -95,27 +95,27 @@ You can build and extend the Docker development image to suit your needs.
 - You can build the development image yourself:
 
     ```sh
-    docker build -t qmcgaw/godevcontainer https://github.com/qdm12/godevcontainer.git
+    docker build -t qmcgaw/basedevcontainer https://github.com/qdm12/basedevcontainer.git
     ```
 
-- You can extend the Docker image `qmcgaw/godevcontainer` with your own instructions.
+- You can extend the Docker image `qmcgaw/basedevcontainer` with your own instructions.
 
-    1. Create a file `.devcontainer/Dockerfile` with `FROM qmcgaw/godevcontainer`
+    1. Create a file `.devcontainer/Dockerfile` with `FROM qmcgaw/basedevcontainer`
     1. Append instructions to the Dockerfile created. For example:
         - Add more Go packages and add an alias
 
             ```Dockerfile
-            FROM qmcgaw/godevcontainer
-            RUN go get -v honnef.co/go/tools/...
+            FROM qmcgaw/basedevcontainer
+            COPY . .
             RUN echo "alias ls='ls -al'" >> ~/.zshrc
             ```
 
         - Add some Alpine packages, you will need to switch to `root`:
 
             ```Dockerfile
-            FROM qmcgaw/godevcontainer
+            FROM qmcgaw/basedevcontainer
             USER root
-            apk add curl
+            RUN apk add bind-tools
             USER vscode
             ```
 

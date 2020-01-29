@@ -5,7 +5,7 @@ git:
   depth: 1
 env:
   global:
-    - DOCKER_REPO=qmcgaw/godevcontainer
+    - DOCKER_REPO=qmcgaw/basedevcontainer
 before_install:
   - curl -fsSL https://get.docker.com | sh
   - echo '{"experimental":"enabled"}' | sudo tee /etc/docker/daemon.json
@@ -17,4 +17,4 @@ install:
   - docker buildx create --name xbuilder --use
 script: bash ci.sh
 after_success:
-  - curl -X POST https://hooks.microbadger.com/images/$DOCKER_REPO/? || exit 0
+  - curl -X POST https://hooks.microbadger.com/images/$DOCKER_REPO/bEP2lBLpFjot59Gyxz4SuMvtj4M= || exit 0
