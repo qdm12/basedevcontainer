@@ -17,7 +17,9 @@
 
 ## Features
 
-- Based on Alpine 3.11 with the packages:
+- `qmcgaw/basedevcontainer:alpine` based on Alpine 3.11 in **184MB** (amd64)
+- `qmcgaw/basedevcontainer:debian` based on Debian Buster Slim in **311MB** (amd64)
+- Contains the packages:
     - `libstdc++`: needed by the VS code server
     - `zsh`: main shell instead of `/bin/sh`
     - `sudo`: run commands as root if needed
@@ -25,6 +27,7 @@
     - `openssh-client`: use SSH keys
     - `nano`: edit files from the terminal
     - `curl`: do HTTP requests
+    - `htop`: for resource monitoring
     - `hub`: interact with Github like a god
 - Custom integrated terminal
     - Based on zsh and [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
@@ -35,9 +38,8 @@
     - Manage your host Docker from within the dev container on Linux, MacOS and Windows
 - Docker uses buildkit by default, with the latest Docker client binary.
 - Runs without root as `vscode` user but you can run Docker without sudo and can use sudo if needed
-- 'Minimal' size of **187MB**
 - Extensible with docker-compose.yml
-- Compatible with `amd64`, `arm/v8` and `arm/v7`
+- Both images are compatible with `amd64`, `arm64`, `arm/v7` and `arm/v6`
 
 ## Requirements
 

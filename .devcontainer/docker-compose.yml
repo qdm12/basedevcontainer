@@ -3,6 +3,8 @@ version: "3.7"
 services:
   vscode:
     image: qmcgaw/basedevcontainer
+    # image: qmcgaw/basedevcontainer:alpine
+    # image: qmcgaw/basedevcontainer:debian
     volumes:
       - ../:/workspace
       - ~/.ssh:/home/vscode/.ssh:ro
