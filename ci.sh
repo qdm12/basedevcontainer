@@ -21,9 +21,16 @@ if [ "$TRAVIS_PULL_REQUEST" = "true" ]; then
   exit $?
 fi
 echo $DOCKER_PASSWORD | docker login -u qmcgaw --password-stdin &> /dev/null
-LATEST_TAG="${TRAVIS_TAG:-latest}"
-TAG_SUFFIX="${TRAVIS_TAG:-}"
-echo "Building Docker images for \"$DOCKER_REPO:alpine-$TAG_SUFFIX\" and \"$DOCKER_REPO:$LATEST_TAG\""
+if [ "$TRAVIS_TAG" = "" ]; then
+  LATEST_TAG=latest
+  ALPINE_TAG=alpine
+  DEBIAN_TAG=debian
+else
+  LATEST_TAG = "$TRAVIS_TAG"
+  ALPINE_TAG=alpine-$TRAVIS_TAG
+  DEBIAN_TAG=debian-$TRAVIS_TAG
+fi
+echo "Building Docker images for \"$DOCKER_REPO:$ALPINE_TAG\" and \"$DOCKER_REPO:$LATEST_TAG\""
 docker buildx build \
     -f alpine.Dockerfile \
     --progress plain \
@@ -33,12 +40,12 @@ docker buildx build \
     --platform=linux/arm/v6 \
     --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
     --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    --build-arg VERSION=alpine-$TAG_SUFFIX \
+    --build-arg VERSION=$ALPINE_TAG \
     -t $DOCKER_REPO:$LATEST_TAG \
-    -t $DOCKER_REPO:alpine-$TAG_SUFFIX \
+    -t $DOCKER_REPO:$ALPINE_TAG \
     --push \
     .
-echo "Building Docker images for \"$DOCKER_REPO:debian-$TAG_SUFFIX\""
+echo "Building Docker images for \"$DOCKER_REPO:$DEBIAN_TAG\""
 docker buildx build \
     -f debian.Dockerfile \
     --progress plain \
@@ -48,7 +55,7 @@ docker buildx build \
     --platform=linux/arm/v6 \
     --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
     --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    --build-arg VERSION=debian-$TAG_SUFFIX \
-    -t $DOCKER_REPO:debian-$TAG_SUFFIX \
+    --build-arg VERSION=$DEBIAN_TAG \
+    -t $DOCKER_REPO:$DEBIAN_TAG \
     --push \
     .

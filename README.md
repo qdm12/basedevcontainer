@@ -97,7 +97,7 @@ You can build and extend the Docker development image to suit your needs.
 - You can build the development image yourself:
 
     ```sh
-    docker build -t qmcgaw/basedevcontainer https://github.com/qdm12/basedevcontainer.git
+    docker build -t qmcgaw/basedevcontainer -f alpine.Dockerfile  https://github.com/qdm12/basedevcontainer.git
     ```
 
 - You can extend the Docker image `qmcgaw/basedevcontainer` with your own instructions.
