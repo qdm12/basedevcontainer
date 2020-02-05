@@ -22,6 +22,7 @@ LABEL \
     org.opencontainers.image.source="https://github.com/qdm12/basedevcontainer" \
     org.opencontainers.image.title="Base Dev container" \
     org.opencontainers.image.description="Base Alpine development container for Visual Studio Code Remote Containers development"
+ENV BASE_VERSION="${VERSION}-${BUILD_DATE}-${VCS_REF}"
 WORKDIR /home/${USERNAME}
 ENTRYPOINT [ "/bin/zsh" ]
 ENV TZ=
