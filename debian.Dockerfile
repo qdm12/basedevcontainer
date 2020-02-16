@@ -42,11 +42,16 @@ COPY --from=docker-cli --chown=${USER_UID}:${USER_GID} /usr/local/bin/docker /us
 COPY --from=docker-compose --chown=${USER_UID}:${USER_GID} /usr/local/bin/docker-compose /usr/local/bin/docker-compose
 ENV DOCKER_BUILDKIT=1
 # All possible docker host groups
-RUN ([ ${USER_GID} = 1000 ] || (addgroup --gid 1000 docker1000 && addgroup ${USERNAME} docker1000)) && \
-    addgroup --gid 976 docker976 && \
-    addgroup --gid 102 docker102 && \
-    adduser ${USERNAME} docker976 && \
-    adduser ${USERNAME} docker102
+RUN G102=`getent group 102 | cut -d":" -f 1` && \
+    G976=`getent group 976 | cut -d":" -f 1` && \
+    G1000=`getent group 1000 | cut -d":" -f 1` && \
+    if [ -z $G102 ]; then G102=docker102; addgroup --gid 102 $G102; fi && \
+    if [ -z $G976 ]; then G976=docker976; addgroup --gid 976 $G976; fi && \
+    if [ -z $G1000 ]; then G1000=docker1000; addgroup --gid 1000 $G1000; fi && \
+    echo 2222 && \
+    addgroup ${USERNAME} $G102 && \
+    addgroup ${USERNAME} $G976 && \
+    addgroup ${USERNAME} $G1000
 # Setup shells
 ENV EDITOR=nano
 RUN apt-get update -y && \
