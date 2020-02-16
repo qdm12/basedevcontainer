@@ -62,7 +62,7 @@ RUN apk add -q --update --progress --no-cache shadow && \
     usermod --shell /bin/zsh root && \
     usermod --shell /bin/zsh ${USERNAME} && \
     apk del shadow && \
-    rm -r /var/cache/apk
+    rm -r /var/cache/apk/*
 COPY --chown=${USER_UID}:${USER_GID} shell/.p10k.zsh shell/.zshrc shell/.welcome.sh /home/${USERNAME}/
 RUN ln -s /home/${USERNAME}/.p10k.zsh /root/.p10k.zsh && \
     cp /home/${USERNAME}/.zshrc /root/.zshrc && \
