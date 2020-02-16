@@ -25,10 +25,12 @@ if [ "$TRAVIS_TAG" = "" ]; then
   LATEST_TAG=latest
   ALPINE_TAG=alpine
   DEBIAN_TAG=debian
+  STRETCH_TAG=stretch
 else
-  LATEST_TAG = "$TRAVIS_TAG"
+  LATEST_TAG="$TRAVIS_TAG"
   ALPINE_TAG=alpine-$TRAVIS_TAG
   DEBIAN_TAG=debian-$TRAVIS_TAG
+  STRETCH_TAG=stretch-$TRAVIS_TAG
 fi
 echo "Building Docker images for \"$DOCKER_REPO:$ALPINE_TAG\" and \"$DOCKER_REPO:$LATEST_TAG\""
 docker buildx build \
@@ -45,7 +47,7 @@ docker buildx build \
     -t $DOCKER_REPO:$ALPINE_TAG \
     --push \
     .
-echo "Building Docker images for \"$DOCKER_REPO:$DEBIAN_TAG\""
+echo "Building Docker images for \"$DOCKER_REPO:$DEBIAN_TAG\" and \"$DOCKER_REPO:$STRETCH_TAG\""
 docker buildx build \
     -f debian.Dockerfile \
     --progress plain \
@@ -55,7 +57,8 @@ docker buildx build \
     --platform=linux/arm/v6 \
     --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
     --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    --build-arg VERSION=$DEBIAN_TAG \
+    --build-arg VERSION=$STRETCH_TAG \
     -t $DOCKER_REPO:$DEBIAN_TAG \
+    -t $DOCKER_REPO:$STRETCH_TAG \
     --push \
     .
