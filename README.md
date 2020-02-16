@@ -18,7 +18,7 @@
 ## Features
 
 - `qmcgaw/basedevcontainer:alpine` based on Alpine 3.11 in **184MB** (amd64)
-- `qmcgaw/basedevcontainer:debian` based on Debian Buster Slim in **311MB** (amd64)
+- `qmcgaw/basedevcontainer:debian` based on Debian Stretch Slim in **290MB** (amd64)
 - Contains the packages:
     - `libstdc++`: needed by the VS code server
     - `zsh`: main shell instead of `/bin/sh`

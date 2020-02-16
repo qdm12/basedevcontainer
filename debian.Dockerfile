@@ -1,3 +1,4 @@
+ARG DEBIAN_VERSION=stretch-slim
 ARG DOCKER_VERSION=19.03.6
 ARG DOCKER_COMPOSE_VERSION=debian-1.25.4
 
@@ -33,7 +34,7 @@ RUN addgroup --gid $USER_GID $USERNAME && \
     rm /var/log/faillog /var/log/lastlog
 # Install Debian packages
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends zsh sudo ca-certificates git openssh-client nano curl tzdata hub htop && \
+    apt-get install -y --no-install-recommends zsh sudo ca-certificates git openssh-client nano curl tzdata htop && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -r /var/cache/* /var/lib/apt/lists/*
