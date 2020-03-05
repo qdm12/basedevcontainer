@@ -55,7 +55,8 @@ RUN G102=`getent group 102 | cut -d":" -f 1` && \
     addgroup ${USERNAME} $G1000
 # Setup shells
 ENV EDITOR=nano \
-    LANG=en_US.UTF-8
+    LANG=en_US.UTF-8 \
+    TERM=xterm
 RUN apk add -q --update --progress --no-cache shadow && \
     usermod --shell /bin/zsh root && \
     usermod --shell /bin/zsh ${USERNAME} && \

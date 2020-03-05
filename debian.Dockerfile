@@ -53,7 +53,8 @@ RUN G102=`getent group 102 | cut -d":" -f 1` && \
     addgroup ${USERNAME} $G976 && \
     addgroup ${USERNAME} $G1000
 # Setup shells
-ENV EDITOR=nano
+ENV EDITOR=nano \
+    TERM=xterm
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends locales && \
     echo "LC_ALL=en_US.UTF-8" >> /etc/environment && \
