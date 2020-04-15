@@ -4,7 +4,7 @@
 
 [![basedevcontainer](https://github.com/qdm12/basedevcontainer/raw/master/title.png)](https://hub.docker.com/r/qmcgaw/basedevcontainer)
 
-[![Build Status](https://travis-ci.org/qdm12/basedevcontainer.svg?branch=master)](https://travis-ci.org/qdm12/basedevcontainer)
+[![Build status](https://github.com/qdm12/basedevcontainer/workflows/Buildx%20latest/badge.svg)](https://github.com/qdm12/basedevcontainer/actions?query=workflow%3A%22Buildx+latest%22)
 [![Docker Pulls](https://img.shields.io/docker/pulls/qmcgaw/basedevcontainer.svg)](https://hub.docker.com/r/qmcgaw/basedevcontainer)
 [![Docker Stars](https://img.shields.io/docker/stars/qmcgaw/basedevcontainer.svg)](https://hub.docker.com/r/qmcgaw/basedevcontainer)
 [![Image size](https://images.microbadger.com/badges/image/qmcgaw/basedevcontainer.svg)](https://microbadger.com/images/qmcgaw/basedevcontainer)

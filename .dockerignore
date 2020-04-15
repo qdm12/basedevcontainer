@@ -4,10 +4,8 @@
 .vscode
 .dockerignore
 .gitignore
-.travis.yml
-ci.sh
+alpine.Dockerfile
+debian.Dockerfile
 LICENSE
 README.md
 title.png
-alpine.Dockerfile
-debian.Dockerfile
