@@ -34,11 +34,9 @@ RUN adduser $USERNAME -s /bin/sh -D -u $USER_UID $USER_GID && \
 # Install Alpine packages
 RUN apk add -q --update --progress --no-cache \
     libstdc++ zsh sudo ca-certificates git openssh-client nano curl tzdata htop
-RUN apk update && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
     apk add -q --update --progress --no-cache hub && \
-    sed -i '$ d' /etc/apk/repositories && \
-    apk update
+    sed -i '$ d' /etc/apk/repositories
 COPY --from=docker-cli --chown=${USER_UID}:${USER_GID} /usr/local/bin/docker /usr/local/bin/docker
 COPY --from=docker-compose --chown=${USER_UID}:${USER_GID} /usr/local/bin/docker-compose /usr/local/bin/docker-compose
 ENV DOCKER_BUILDKIT=1
