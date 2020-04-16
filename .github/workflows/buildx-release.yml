@@ -55,7 +55,7 @@ jobs:
         run: |
           docker buildx build \
             -f debian.Dockerfile \
-            --build-arg DEBIAN_VERSION=stretch-slim
+            --build-arg DEBIAN_VERSION=stretch-slim \
             --progress plain \
             --platform=linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 \
             --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
@@ -78,7 +78,7 @@ jobs:
         run: |
           docker buildx build \
             -f debian.Dockerfile \
-            --build-arg DEBIAN_VERSION=buster-slim
+            --build-arg DEBIAN_VERSION=buster-slim \
             --progress plain \
             --platform=linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 \
             --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
@@ -102,7 +102,7 @@ jobs:
         run: |
           docker buildx build \
             -f debian.Dockerfile \
-            --build-arg DEBIAN_VERSION=bullseye-slim
+            --build-arg DEBIAN_VERSION=bullseye-slim \
             --progress plain \
             --platform=linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 \
             --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
