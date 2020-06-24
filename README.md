@@ -17,7 +17,7 @@
 
 ## Features
 
-- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.11 in **184MB** (size for amd64)
+- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.12 in **184MB** (size for amd64)
 - `qmcgaw/basedevcontainer:debian` (or `:debian-10`) based on Debian Buster Slim in **314MB** (size for amd64)
 - `qmcgaw/basedevcontainer:debian-11` based on Debian Bullseye Slim in **323MB** (size for amd64)
 - `qmcgaw/basedevcontainer:debian-9` based on Debian Stretch Slim in **294MB** (size for amd64)

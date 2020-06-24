@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=3.11
+ARG ALPINE_VERSION=3.12
 ARG DOCKER_VERSION=19.03.6
 ARG DOCKER_COMPOSE_VERSION=alpine-1.25.4
 
@@ -72,6 +72,6 @@ RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zs
     chmod -R 700 /home/${USERNAME}/.oh-my-zsh && \
     cp -r /home/${USERNAME}/.oh-my-zsh /root/.oh-my-zsh && \
     chown -R root:root /root/.oh-my-zsh
-# Alpine 3.11 sudo warning fix
+# Alpine 3.12 sudo warning fix
 RUN echo "Set disable_coredump false" >> /etc/sudo.conf
 USER ${USERNAME}

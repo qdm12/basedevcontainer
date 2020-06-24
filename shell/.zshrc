@@ -39,7 +39,7 @@ where code &> /dev/null && echo "VS code server `code -v | head -n 1`"
 if [ ! -z $DOCKERSOCK_OK ]; then
   echo "Docker server `docker version --format {{.Server.Version}}` | client `docker version --format {{.Client.Version}}`"
   echo "Docker-Compose `docker-compose version --short`"
-  alias alpine='docker run -it --rm alpine:3.11'
+  alias alpine='docker run -it --rm alpine:3.12'
   alias dive='docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive'
   alias phonito='docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=/opt/app/phonito-scanner -e PHONITO_API_TOKEN=$PHONITO_API_TOKEN phonito/scanner'
   alias trivy='docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy'
