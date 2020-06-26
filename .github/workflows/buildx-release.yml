@@ -8,7 +8,6 @@ on:
       - .github/workflows/buildx-latest.yml
       - .github/workflows/dockerhub-description.yml
       - .github/workflows/labels.yml
-      - .github/workflows/misspell.yml
       - .vscode
       - .gitignore
       - docker-compose.yml
