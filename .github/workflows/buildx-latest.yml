@@ -14,7 +14,7 @@ on:
       - docker-compose.yml
       - LICENSE
       - README.md
-      - title.png
+      - title.svg
   schedule:
     - cron: '0 9 * * 0'
 jobs:

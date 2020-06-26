@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="a" width="298.8" height="236.1" x="-22" y="41" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset/>
+      <feGaussianBlur stdDeviation="10.7"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+      <feBlend in2="BackgroundImageFix" mode="overlay" result="effect1_dropShadow"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+    <filter id="b" width="122.7" height="297.3" x="155" y="-21" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset/>
+      <feGaussianBlur stdDeviation="10.7"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+      <feBlend in2="BackgroundImageFix" mode="overlay" result="effect1_dropShadow"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+    <linearGradient id="c" x1="127.8" x2="127.8" y1=".7" y2="255.3" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(-30.05 7.12) scale(.9801)">
+    <path fill="#85cbf8" d="M32.55 26.28h39.91s2.83.08 4.64-1.87c2.48-3.12 4.92.31 3.72 2.8 0 0-7.06 21.42-29.75 19.47-22.7-1.95-18.52-20.4-18.52-20.4z"/>
+    <path fill="#4181ca" d="M53.93 47.74c-.95 0-1.93-.04-2.94-.13-7.7-.66-13.26-3.26-16.52-7.72-4.5-6.15-2.9-13.5-2.83-13.82.1-.43.47-.73.9-.73h39.92c2.3-5.76 11.73-2.68 9.69 3.66-.2 3.21-9.62 18.74-28.22 18.74zM33.33 27.2c-.25 1.9-.57 7.2 2.66 11.6 2.92 3.99 8.03 6.32 15.16 6.94.94.08 1.87.12 2.75.12 19.56 0 25.97-18.76 26.03-18.95.95-3.26-1.86-2.62-3.3-1.85-2.07 2.23-4.06 2.14-4.2 2.14z"/>
+    <circle cx="42.98" cy="34.21" r="2.33" fill="#4181ca"/>
+    <path fill="#85cbf8" d="M34.11 18.81h7.46v7.46h-7.46zM41.58 18.81h7.46v7.46h-7.46zM49.04 18.81h7.46v7.46h-7.46zM56.51 18.81h7.46v7.46h-7.46zM41.58 11.35h7.46v7.46h-7.46zM49.04 11.35h7.46v7.46h-7.46zM56.51 11.35h7.46v7.46h-7.46zM56.51 3.88h7.46v7.46h-7.46z"/>
+    <path fill="#85cbf8" d="M63.97 18.81h7.46v7.46h-7.46z"/>
+    <path fill="#4181ca" d="M71.44 17.88H64.9v-14a.94.94 0 00-.94-.93h-7.46a.94.94 0 00-.94.93v6.53h-14a.94.94 0 00-.93.94v6.53h-6.53a.94.94 0 00-.93.93v7.47c0 .5.42.93.93.93h37.33c.51 0 .93-.42.93-.93V18.8a.94.94 0 00-.93-.93zm-30.8 7.46h-5.6v-5.6h5.6zm7.47 0h-5.6v-5.6h5.6zm7.46 0h-5.6v-5.6h5.6zm0-7.46h-5.6v-2.8a.93.93 0 00-1.87 0v2.8h-5.59v-5.6h13.06zm7.47 7.46h-5.6v-5.6h2.8c.51 0 .93-.42.93-.93a.94.94 0 00-.93-.93h-2.8v-5.6h5.6zm0-14.93h-5.6v-5.6h5.6zm7.46 14.93h-5.6v-5.6h5.6z"/>
+    <g fill="#0d597f">
+      <path d="M66.96 23.55v-.58l-.41.42a1.2 1.2 0 00.23.13.63.63 0 00.18.03m2.13-.05l.01.01.04.02a.39.39 0 00.2.02.85.85 0 00.22-.08l.13-.08-.32-.3-1.04-1.06-.46.46-.62-.64-1.56 1.54a1.2 1.2 0 00.24.13.62.62 0 00.18.03.38.38 0 00.14-.02.21.21 0 00.04-.03l.7-.7.25-.24.7.7.24.24.01.01.04.02a.39.39 0 00.21.02.86.86 0 00.21-.08l.13-.08-.56-.54.1-.1.49.47.28.28m0-2.9l1.36 2.37-1.37 2.37h-2.74l-1.37-2.37 1.37-2.38z"/>
+      <path d="M65.9 23l-.1-.1.02-.02.1.1z"/>
+    </g>
+    <g fill="none" mask="url(#a)" transform="matrix(.05298 -.04392 .0464 .05016 71.79 20.44)">
+      <path fill="#0065a9" d="M247 28L194 2c-6-3-13-1-18 3L3 163c-4 4-4 11 0 16l14 12c4 4 10 4 14 1L239 34c7-5 17 0 17 9v-1c0-6-4-12-9-14z"/>
+      <g filter="url(#a)">
+        <path fill="#007acc" d="M247 228l-53 26c-6 3-13 1-18-3L3 93c-4-4-4-11 0-16l14-12c4-4 10-4 14-1l208 158c7 5 17 0 17-9v1c0 6-4 12-9 14z"/>
+      </g>
+      <g filter="url(#b)">
+        <path fill="#1f9cf0" d="M194 254c-6 3-13 1-18-3 6 6 16 1 16-7V12c0-8-10-13-16-7 5-4 12-6 18-3l53 26c5 2 9 8 9 14v172c0 6-4 12-9 14z"/>
+      </g>
+      <path fill="url(#c)" fill-rule="evenodd" d="M181 254c4 2 9 2 13 0l53-26c5-2 9-8 9-14V42c0-6-4-12-9-14L194 2a16 16 0 00-18 3L75 97 31 64c-4-3-10-3-14 1L3 77c-4 5-4 12 0 16l38 35-38 35c-4 4-4 11 0 16l14 12c4 4 10 4 14 1l44-33 101 92zm11-184l-77 58 77 58z" clip-rule="evenodd" opacity=".3"/>
+    </g>
+  </g>
+</svg>

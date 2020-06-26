@@ -2,7 +2,7 @@
 
 **Base Alpine development container for Visual Studio Code, used as base image by other images**
 
-[![basedevcontainer](https://github.com/qdm12/basedevcontainer/raw/master/title.png)](https://hub.docker.com/r/qmcgaw/basedevcontainer)
+<img height="300" src="https://raw.githubusercontent.com/qdm12/basedevcontainer/master/title.svg?sanitize=true">
 
 [![Build status](https://github.com/qdm12/basedevcontainer/workflows/Buildx%20latest/badge.svg)](https://github.com/qdm12/basedevcontainer/actions?query=workflow%3A%22Buildx+latest%22)
 [![Docker Pulls](https://img.shields.io/docker/pulls/qmcgaw/basedevcontainer.svg)](https://hub.docker.com/r/qmcgaw/basedevcontainer)
