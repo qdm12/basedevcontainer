@@ -17,11 +17,11 @@
 
 ## Features
 
-- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.12 in **184MB** (size for amd64)
-- `qmcgaw/basedevcontainer:debian` (or `:debian-10`) based on Debian Buster Slim in **314MB** (size for amd64)
-- `qmcgaw/basedevcontainer:debian-11` based on Debian Bullseye Slim in **323MB** (size for amd64)
-- `qmcgaw/basedevcontainer:debian-9` based on Debian Stretch Slim in **294MB** (size for amd64)
-- All images are compatible with `amd64`, `arm64`, `arm/v7` and `arm/v6`
+- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.12 in **184MB**
+- `qmcgaw/basedevcontainer:debian` (or `:debian-10`) based on Debian Buster Slim in **314MB**
+- `qmcgaw/basedevcontainer:debian-11` based on Debian Bullseye Slim in **323MB**
+- `qmcgaw/basedevcontainer:debian-9` based on Debian Stretch Slim in **294MB**
+- All images are compatible with the `amd64` cpu architecture only
 - Contains the packages:
     - `libstdc++`: needed by the VS code server
     - `zsh`: main shell instead of `/bin/sh`
