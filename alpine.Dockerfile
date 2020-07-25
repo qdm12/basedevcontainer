@@ -71,6 +71,4 @@ RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zs
     chmod -R 700 /home/${USERNAME}/.oh-my-zsh && \
     cp -r /home/${USERNAME}/.oh-my-zsh /root/.oh-my-zsh && \
     chown -R root:root /root/.oh-my-zsh
-# Alpine 3.12 sudo warning fix
-RUN echo "Set disable_coredump false" >> /etc/sudo.conf
 USER ${USERNAME}
