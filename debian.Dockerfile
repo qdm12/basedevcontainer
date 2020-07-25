@@ -48,7 +48,6 @@ RUN G102=`getent group 102 | cut -d":" -f 1` && \
     if [ -z $G102 ]; then G102=docker102; addgroup --gid 102 $G102; fi && \
     if [ -z $G976 ]; then G976=docker976; addgroup --gid 976 $G976; fi && \
     if [ -z $G1000 ]; then G1000=docker1000; addgroup --gid 1000 $G1000; fi && \
-    echo 2222 && \
     addgroup ${USERNAME} $G102 && \
     addgroup ${USERNAME} $G976 && \
     addgroup ${USERNAME} $G1000
