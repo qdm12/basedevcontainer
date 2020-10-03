@@ -31,7 +31,7 @@
     - `nano`: edit files from the terminal
     - `curl`: do HTTP requests
     - `htop`: for resource monitoring
-    - `hub`: interact with Github like a god
+    - `gh`: interact with Github with the terminal
 - Custom integrated terminal
     - Based on zsh and [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
     - Uses the [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
