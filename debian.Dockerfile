@@ -1,9 +1,19 @@
 ARG DEBIAN_VERSION=bullseye-slim
 ARG DOCKER_VERSION=19.03.13
 ARG DOCKER_COMPOSE_VERSION=debian-1.27.4
+ARG GOLANG_VERSION=1.15
 
 FROM docker:${DOCKER_VERSION} AS docker-cli
 FROM docker/compose:${DOCKER_COMPOSE_VERSION} AS docker-compose
+
+FROM golang:${GOLANG_VERSION}-buster AS gobuilder
+RUN apt-get install -y git make
+ENV CGO_ENABLED=0
+WORKDIR /githubcli
+ARG GITHUBCLI_VERSION=v1.0.0
+RUN git clone --branch ${GITHUBCLI_VERSION} --single-branch --depth 1 https://github.com/cli/cli.git .
+RUN make && \
+    chmod 500 bin/gh
 
 FROM debian:${DEBIAN_VERSION}
 ARG BUILD_DATE
@@ -38,6 +48,7 @@ RUN apt-get update -y && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -r /var/cache/* /var/lib/apt/lists/*
+COPY --from=gobuilder --chown=${USER_UID}:${USER_GID} /githubcli/bin/gh /usr/local/bin/gh
 COPY --from=docker-cli --chown=${USER_UID}:${USER_GID} /usr/local/bin/docker /usr/local/bin/docker
 COPY --from=docker-compose --chown=${USER_UID}:${USER_GID} /usr/local/bin/docker-compose /usr/local/bin/docker-compose
 ENV DOCKER_BUILDKIT=1

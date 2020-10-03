@@ -1,9 +1,19 @@
 ARG ALPINE_VERSION=3.12
 ARG DOCKER_VERSION=19.03.13
 ARG DOCKER_COMPOSE_VERSION=alpine-1.27.4
+ARG GOLANG_VERSION=1.15
 
 FROM docker:${DOCKER_VERSION} AS docker-cli
 FROM docker/compose:${DOCKER_COMPOSE_VERSION} AS docker-compose
+
+FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} AS gobuilder
+RUN apk add --no-cache --update -q git make
+ENV CGO_ENABLED=0
+WORKDIR /githubcli
+ARG GITHUBCLI_VERSION=v1.0.0
+RUN git clone --branch ${GITHUBCLI_VERSION} --single-branch --depth 1 https://github.com/cli/cli.git .
+RUN make && \
+    chmod 500 bin/gh
 
 FROM alpine:${ALPINE_VERSION}
 ARG BUILD_DATE
@@ -34,9 +44,7 @@ RUN adduser $USERNAME -s /bin/sh -D -u $USER_UID $USER_GID && \
 # Install Alpine packages
 RUN apk add -q --update --progress --no-cache \
     libstdc++ zsh sudo ca-certificates git openssh-client nano curl tzdata htop
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    apk add -q --update --progress --no-cache hub && \
-    sed -i '$ d' /etc/apk/repositories
+COPY --from=gobuilder --chown=${USER_UID}:${USER_GID} /githubcli/bin/gh /usr/local/bin/gh
 COPY --from=docker-cli --chown=${USER_UID}:${USER_GID} /usr/local/bin/docker /usr/local/bin/docker
 COPY --from=docker-compose --chown=${USER_UID}:${USER_GID} /usr/local/bin/docker-compose /usr/local/bin/docker-compose
 ENV DOCKER_BUILDKIT=1
