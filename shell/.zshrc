@@ -29,6 +29,7 @@ if [ ! -z $DOCKERSOCK_OK ]; then
   if [ "$DOCKERSOCK_GROUP" != "1000" ] && [ "$DOCKERSOCK_GROUP" != "102" ] && [ "$DOCKERSOCK_GROUP" != "976" ]; then
     echo "Docker socket not owned by group IDs 1000, 102 or 976, changing its group to `id -g`"
     sudo chown $DOCKERSOCK_USER:`id -g` /var/run/docker.sock
+    sudo chmod 770 /var/run/docker.sock
   fi
 fi
 
