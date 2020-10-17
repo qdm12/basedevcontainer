@@ -44,7 +44,7 @@ RUN addgroup --gid $USER_GID $USERNAME && \
     rm /var/log/faillog /var/log/lastlog
 # Install Debian packages
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends zsh sudo ca-certificates git openssh-client nano curl tzdata htop && \
+    apt-get install -y --no-install-recommends zsh sudo ca-certificates git openssh-client nano curl tzdata htop locales && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -r /var/cache/* /var/lib/apt/lists/*
@@ -65,16 +65,10 @@ RUN G102=`getent group 102 | cut -d":" -f 1` && \
 # Setup shells
 ENV EDITOR=nano \
     TERM=xterm
-RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends locales && \
-    echo "LC_ALL=en_US.UTF-8" >> /etc/environment && \
+RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     echo "LANG=en_US.UTF-8" > /etc/locale.conf && \
-    locale-gen en_US.UTF-8 && \
-    apt-get purge -y locales && \
-    apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -r /var/cache/* /var/lib/apt/lists/*
+    locale-gen en_US.UTF-8
 RUN usermod --shell /bin/zsh root && \
     usermod --shell /bin/zsh ${USERNAME}
 COPY --chown=${USER_UID}:${USER_GID} shell/.p10k.zsh shell/.zshrc shell/.welcome.sh /home/${USERNAME}/
