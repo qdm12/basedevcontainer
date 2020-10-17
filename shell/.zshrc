@@ -42,7 +42,6 @@ if [ ! -z $DOCKERSOCK_OK ]; then
   echo "Docker-Compose `docker-compose version --short`"
   alias alpine='docker run -it --rm alpine:3.12'
   alias dive='docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive'
-  alias trivy='docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy'
 fi
 echo
 [ -f ~/.zshrc-specific.sh ] && source ~/.zshrc-specific
