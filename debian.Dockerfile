@@ -10,7 +10,7 @@ FROM golang:${GOLANG_VERSION}-buster AS gobuilder
 RUN apt-get install -y git make
 ENV CGO_ENABLED=0
 WORKDIR /githubcli
-ARG GITHUBCLI_VERSION=v1.0.0
+ARG GITHUBCLI_VERSION=v1.2.1
 RUN git clone --branch ${GITHUBCLI_VERSION} --single-branch --depth 1 https://github.com/cli/cli.git .
 RUN make && \
     chmod 500 bin/gh
