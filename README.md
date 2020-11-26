@@ -29,8 +29,6 @@
     - `git`: interact with Git repositories
     - `openssh-client`: use SSH keys
     - `nano`: edit files from the terminal
-    - `curl`: do HTTP requests
-    - `htop`: for resource monitoring
     - `gh`: interact with Github with the terminal
 - Custom integrated terminal
     - Based on zsh and [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
@@ -128,7 +126,7 @@ You can build and extend the Docker development image to suit your needs.
 
 - You can bind mount a file at `/home/vscode/.welcome.sh` to modify the welcome message (use `/root/.welcome.sh` for `root`)
 
-# TODO
+## TODO
 
 - [ ] Firewall, see [this](https://code.visualstudio.com/docs/remote/containers#_what-are-the-connectivity-requirements-for-the-vs-code-server-when-it-is-running-in-a-container)
 - [ ] Extend another docker-compose.yml
