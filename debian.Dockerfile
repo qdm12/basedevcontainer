@@ -9,7 +9,7 @@ FROM docker/compose:${DOCKER_COMPOSE_VERSION} AS docker-compose
 FROM golang:${GOLANG_VERSION}-buster AS gobuilder
 ENV CGO_ENABLED=0
 WORKDIR /githubcli
-ARG GITHUBCLI_VERSION=v1.3.1
+ARG GITHUBCLI_VERSION=v1.4.0
 RUN git clone --branch ${GITHUBCLI_VERSION} --single-branch --depth 1 https://github.com/cli/cli.git .
 RUN make && \
     chmod 500 bin/gh
