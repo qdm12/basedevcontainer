@@ -69,7 +69,7 @@ RUN ln -s /home/${USERNAME}/.p10k.zsh /root/.p10k.zsh && \
     cp /home/${USERNAME}/.welcome.sh /root/.welcome.sh && \
     sed -i "s/HOMEPATH/home\/${USERNAME}/" /home/${USERNAME}/.zshrc && \
     sed -i "s/HOMEPATH/root/" /root/.zshrc
-ARG POWERLEVEL10K_VERSION=v1.14.3
+ARG POWERLEVEL10K_VERSION=v1.14.4
 RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git /home/${USERNAME}/.oh-my-zsh 2>&1 && \
     git clone --branch ${POWERLEVEL10K_VERSION} --depth 1 https://github.com/romkatv/powerlevel10k.git /home/${USERNAME}/.oh-my-zsh/custom/themes/powerlevel10k 2>&1 && \
     rm -rf /home/${USERNAME}/.oh-my-zsh/custom/themes/powerlevel10k/.git && \
