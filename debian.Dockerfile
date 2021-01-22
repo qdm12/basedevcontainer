@@ -96,7 +96,8 @@ RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zs
 # Docker
 COPY --from=docker-cli --chown=${USER_UID}:${USER_GID} /usr/local/bin/docker /usr/local/bin/docker
 COPY --from=docker-compose --chown=${USER_UID}:${USER_GID} /usr/local/bin/docker-compose /usr/local/bin/docker-compose
-ENV DOCKER_BUILDKIT=1
+ENV DOCKER_BUILDKIT=1 \
+    COMPOSE_DOCKER_CLI_BUILD=1
 # All possible docker host groups
 RUN G102=`getent group 102 | cut -d":" -f 1` && \
     G976=`getent group 976 | cut -d":" -f 1` && \
