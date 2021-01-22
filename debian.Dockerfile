@@ -1,6 +1,6 @@
 ARG DEBIAN_VERSION=bullseye-slim
-ARG DOCKER_VERSION=20.10.1
-ARG DOCKER_COMPOSE_VERSION=debian-1.27.4
+ARG DOCKER_VERSION=20.10.2
+ARG DOCKER_COMPOSE_VERSION=debian-1.28.0
 ARG GOLANG_VERSION=1.15
 
 FROM docker:${DOCKER_VERSION} AS docker-cli
@@ -9,7 +9,7 @@ FROM docker/compose:${DOCKER_COMPOSE_VERSION} AS docker-compose
 FROM golang:${GOLANG_VERSION}-buster AS gobuilder
 ENV CGO_ENABLED=0
 WORKDIR /githubcli
-ARG GITHUBCLI_VERSION=v1.4.0
+ARG GITHUBCLI_VERSION=v1.5.0
 RUN git clone --branch ${GITHUBCLI_VERSION} --single-branch --depth 1 https://github.com/cli/cli.git .
 RUN make && \
     chmod 500 bin/gh
@@ -84,7 +84,7 @@ RUN ln -s /home/${USERNAME}/.p10k.zsh /root/.p10k.zsh && \
     cp /home/${USERNAME}/.welcome.sh /root/.welcome.sh && \
     sed -i "s/HOMEPATH/home\/${USERNAME}/" /home/${USERNAME}/.zshrc && \
     sed -i "s/HOMEPATH/root/" /root/.zshrc
-ARG POWERLEVEL10K_VERSION=v1.14.4
+ARG POWERLEVEL10K_VERSION=v1.14.6
 RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git /home/${USERNAME}/.oh-my-zsh && \
     git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git /home/${USERNAME}/.oh-my-zsh/custom/themes/powerlevel10k && \
     rm -rf /home/${USERNAME}/.oh-my-zsh/custom/themes/powerlevel10k/.git && \
