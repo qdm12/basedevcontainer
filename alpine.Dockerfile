@@ -1,7 +1,7 @@
 ARG ALPINE_VERSION=3.13
-ARG DOCKER_VERSION=20.10.2
-ARG DOCKER_COMPOSE_VERSION=alpine-1.28.4
-ARG GOLANG_VERSION=1.15
+ARG DOCKER_VERSION=20.10.6
+ARG DOCKER_COMPOSE_VERSION=alpine-1.29.1
+ARG GOLANG_VERSION=1.16
 
 FROM docker:${DOCKER_VERSION} AS docker-cli
 FROM docker/compose:${DOCKER_COMPOSE_VERSION} AS docker-compose
@@ -10,7 +10,7 @@ FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} AS gobuilder
 RUN apk add --no-cache --update -q git make
 ENV CGO_ENABLED=0
 WORKDIR /githubcli
-ARG GITHUBCLI_VERSION=v1.7.0
+ARG GITHUBCLI_VERSION=v1.9.1
 RUN git clone --branch ${GITHUBCLI_VERSION} --single-branch --depth 1 https://github.com/cli/cli.git .
 RUN make && \
     chmod 500 bin/gh
