@@ -49,7 +49,7 @@ RUN apt-get update -y && \
 # Setup shell
 ENTRYPOINT [ "/bin/zsh" ]
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends zsh nano locales && \
+    apt-get install -y --no-install-recommends zsh nano locales wget && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -r /var/cache/* /var/lib/apt/lists/*
