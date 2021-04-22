@@ -77,6 +77,10 @@ COPY --from=docker-compose /usr/local/bin/docker-compose /usr/local/bin/docker-c
 ENV DOCKER_BUILDKIT=1 \
     COMPOSE_DOCKER_CLI_BUILD=1
 
+# Bit
+RUN wget -qO- https://gobinaries.com/chriswalz/bit | sh && \
+    echo "y" | bit complete
+
 # Github CLI
 COPY --from=gobuilder /githubcli/bin/gh /usr/local/bin/gh
 
