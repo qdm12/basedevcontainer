@@ -64,9 +64,12 @@ RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment && \
 RUN usermod --shell /bin/zsh root
 COPY shell/.p10k.zsh shell/.zshrc shell/.welcome.sh /root/
 ARG POWERLEVEL10K_VERSION=v1.14.6
-RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
-    git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k && \
-    rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git
+ARG ZSHAUTOCOMPLETE_VERSION=21.04.13
+RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh 2>&1 && \
+    git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k 2>&1 && \
+    git clone --branch ${ZSHAUTOCOMPLETE_VERSION} --single-branch --depth 1 https://github.com/marlonrichert/zsh-autocomplete.git ~/.oh-my-zsh/custom/plugins/zsh-autocomplete 2>&1 && \
+    rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git && \
+    rm -rf ~/.oh-my-zsh/custom/plugins/zsh-autocomplete/.git
 
 # Docker
 COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker

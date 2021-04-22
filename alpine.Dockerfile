@@ -55,9 +55,12 @@ RUN apk add -q --update --progress --no-cache shadow && \
     apk del shadow
 COPY shell/.p10k.zsh shell/.zshrc shell/.welcome.sh /root/
 ARG POWERLEVEL10K_VERSION=v1.14.6
+ARG ZSHAUTOCOMPLETE_VERSION=21.04.13
 RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh 2>&1 && \
-    git clone --branch ${POWERLEVEL10K_VERSION} --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k 2>&1 && \
-    rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git
+    git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k 2>&1 && \
+    git clone --branch ${ZSHAUTOCOMPLETE_VERSION} --single-branch --depth 1 https://github.com/marlonrichert/zsh-autocomplete.git ~/.oh-my-zsh/custom/plugins/zsh-autocomplete 2>&1 && \
+    rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git && \
+    rm -rf ~/.oh-my-zsh/custom/plugins/zsh-autocomplete/.git
 
 # Docker and docker-compose
 COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker
