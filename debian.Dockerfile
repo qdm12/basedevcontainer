@@ -71,6 +71,12 @@ RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zs
     rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git && \
     rm -rf ~/.oh-my-zsh/custom/plugins/zsh-autocomplete/.git
 
+ARG LOGO_LS_VERSION=1.3.7
+RUN wget -qO- "https://github.com/Yash-Handa/logo-ls/releases/download/v$LOGO_LS_VERSION/logo-ls_Linux_x86_64.tar.gz" | \
+    tar -xzC /usr/local/bin --strip-components=1 logo-ls_Linux_x86_64/logo-ls && \
+    chmod 500 /usr/local/bin/logo-ls && \
+    echo "alias ls='logo-ls'" >> /root/.zshrc
+
 # Docker
 COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker
 COPY --from=docker-compose /usr/local/bin/docker-compose /usr/local/bin/docker-compose
