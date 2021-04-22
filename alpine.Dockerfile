@@ -69,7 +69,9 @@ ENV DOCKER_BUILDKIT=1 \
     COMPOSE_DOCKER_CLI_BUILD=1
 
 # Bit
-RUN wget -qO- https://gobinaries.com/chriswalz/bit | sh && \
+ARG BIT_VERSION=1.1.1
+RUN wget -qO- https://github.com/chriswalz/bit/releases/download/v${BIT_VERSION}/bit_${BIT_VERSION}_linux_amd64.tar.gz | \
+    tar -xzC /usr/local/bin bit && \
     echo "y" | bit complete
 
 # Github CLI
