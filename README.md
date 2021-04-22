@@ -25,7 +25,6 @@
 - Contains the packages:
     - `libstdc++`: needed by the VS code server
     - `zsh`: main shell instead of `/bin/sh`
-    - `sudo`: run commands as root if needed
     - `git`: interact with Git repositories
     - `openssh-client`: use SSH keys
     - `nano`: edit files from the terminal
@@ -38,7 +37,6 @@
     - Easily bind mount your SSH keys to use with **git**
     - Manage your host Docker from within the dev container on Linux, MacOS and Windows
 - Docker uses buildkit by default, with the latest Docker client binary.
-- Runs without root as `vscode` user but you can run Docker without sudo and can use sudo if needed
 - Extensible with docker-compose.yml
 
 ## Requirements
