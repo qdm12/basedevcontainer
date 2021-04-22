@@ -53,13 +53,17 @@ ENV EDITOR=nano \
 RUN apk add -q --update --progress --no-cache shadow && \
     usermod --shell /bin/zsh root && \
     apk del shadow
-COPY shell/.p10k.zsh shell/.zshrc shell/.welcome.sh /root/
+
+COPY shell/.zshrc shell/.welcome.sh /root/
+RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh 2>&1
+
 ARG POWERLEVEL10K_VERSION=v1.14.6
+COPY shell/.p10k.zsh /root/
+RUN git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k 2>&1 && \
+    rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git
+
 ARG ZSHAUTOCOMPLETE_VERSION=21.04.13
-RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh 2>&1 && \
-    git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k 2>&1 && \
-    git clone --branch ${ZSHAUTOCOMPLETE_VERSION} --single-branch --depth 1 https://github.com/marlonrichert/zsh-autocomplete.git ~/.oh-my-zsh/custom/plugins/zsh-autocomplete 2>&1 && \
-    rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git && \
+RUN git clone --branch ${ZSHAUTOCOMPLETE_VERSION} --single-branch --depth 1 https://github.com/marlonrichert/zsh-autocomplete.git ~/.oh-my-zsh/custom/plugins/zsh-autocomplete 2>&1 && \
     rm -rf ~/.oh-my-zsh/custom/plugins/zsh-autocomplete/.git
 
 ARG LOGO_LS_VERSION=1.3.7
