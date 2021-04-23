@@ -13,6 +13,6 @@ if [ -d "/tmp/.ssh" ]; then
   cp -r /tmp/.ssh/ ~/.ssh/
   chmod 700 ~/.ssh
   chmod 600 ~/.ssh/*
-  chmod 644 ~/.ssh/*.pub
+  chmod 644 ~/.ssh/*.pub &> /dev/null
   echo "SSH files copied to ~/.ssh with correct permissions"
 fi
