@@ -17,10 +17,10 @@
 
 ## Features
 
-- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.13 in **136MB**
-- `qmcgaw/basedevcontainer:debian` (or `:debian-10`) based on Debian Buster Slim in **314MB**
-- `qmcgaw/basedevcontainer:debian-11` based on Debian Bullseye Slim in **307MB**
-- `qmcgaw/basedevcontainer:debian-9` based on Debian Stretch Slim in **294MB**
+- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.13 in **167MB**
+- `qmcgaw/basedevcontainer:debian` (or `:debian-10`) based on Debian Buster Slim in **331MB**
+- `qmcgaw/basedevcontainer:debian-11` based on Debian Bullseye Slim in **324MB**
+- `qmcgaw/basedevcontainer:debian-9` based on Debian Stretch Slim in **314MB**
 - All images are compatible with the `amd64` cpu architecture only
 - Contains the packages:
     - `libstdc++`: needed by the VS code server
@@ -28,10 +28,16 @@
     - `git`: interact with Git repositories
     - `openssh-client`: use SSH keys
     - `nano`: edit files from the terminal
-    - `gh`: interact with Github with the terminal
+- Contains the binaries:
+    - [`gh`](https://github.com/cli/cli): interact with Github with the terminal
+    - `docker`
+    - `docker-compose`
+    - [`bit`](https://github.com/chriswalz/bit)
 - Custom integrated terminal
     - Based on zsh and [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
     - Uses the [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
+    - With [autocomplete plugin](https://github.com/marlonrichert/zsh-autocomplete)
+    - With [Logo LS](https://github.com/Yash-Handa/logo-ls) as a replacement for `ls`
     - Shows information on login; easily extensible
 - Cross platform
     - Easily bind mount your SSH keys to use with **git**
