@@ -10,7 +10,7 @@ if [ -d "/tmp/.ssh" ]; then
     echo "~/.ssh already exists, not overriding with files from /tmp/.ssh"
     exit 0
   fi
-  cp -r /tmp/.ssh/ ~/.ssh/
+  cp -rf /tmp/.ssh ~/
   chmod 700 ~/.ssh
   chmod 600 ~/.ssh/*
   chmod 644 ~/.ssh/*.pub &> /dev/null
