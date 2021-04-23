@@ -45,6 +45,7 @@ ENV TZ=
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends git openssh-client && \
     rm -r /var/cache/* /var/lib/apt/lists/*
+COPY .windows.sh /root/
 
 # Setup shell
 ENTRYPOINT [ "/bin/zsh" ]

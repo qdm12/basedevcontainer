@@ -38,6 +38,7 @@
     - Manage your host Docker from within the dev container on Linux, MacOS and Windows
 - Docker uses buildkit by default, with the latest Docker client binary.
 - Extensible with docker-compose.yml
+- Supports SSH keys with Windows (Hyperv) bind mounts at /tmp/.ssh
 
 ## Requirements
 

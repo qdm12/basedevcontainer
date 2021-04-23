@@ -40,6 +40,7 @@ ENV TZ=
 
 # Setup Git and SSH
 RUN apk add -q --update --progress --no-cache git openssh-client
+COPY .windows.sh /root/
 
 WORKDIR /root
 

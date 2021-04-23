@@ -10,6 +10,8 @@ source ~/.p10k.zsh
 source ~/.oh-my-zsh/custom/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 # TODO Ascii art
 
+[ -f ~/.windows.sh ] && source ~/.windows.sh
+
 # SSH key check
 test -f ~/.ssh/id_rsa
 [ "$?" = 0 ] && SSHRSA_OK=yes
