@@ -36,7 +36,6 @@
 - Custom integrated terminal
     - Based on zsh and [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
     - Uses the [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
-    - With [autocomplete plugin](https://github.com/marlonrichert/zsh-autocomplete)
     - With [Logo LS](https://github.com/Yash-Handa/logo-ls) as a replacement for `ls`
     - Shows information on login; easily extensible
 - Cross platform

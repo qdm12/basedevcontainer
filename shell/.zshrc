@@ -7,13 +7,12 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(vscode git colorize docker docker-compose)
 source $ZSH/oh-my-zsh.sh
 source ~/.p10k.zsh
-source ~/.oh-my-zsh/custom/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 # TODO Ascii art
 
 [ -f ~/.windows.sh ] && source ~/.windows.sh
 
 # SSH key check
-test -f ~/.ssh/id_rsa
+list="$(ls -al ~/.ssh)"
 [ "$?" = 0 ] && SSHRSA_OK=yes
 [ -z $SSHRSA_OK ] && >&2 echo "[WARNING] No id_rsa SSH private key found, SSH functionalities might not work"
 
