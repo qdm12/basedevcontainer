@@ -10,7 +10,7 @@ FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} AS gobuilder
 RUN apk add --no-cache --update -q git make
 ENV CGO_ENABLED=0
 WORKDIR /githubcli
-ARG GITHUBCLI_VERSION=v1.9.2
+ARG GITHUBCLI_VERSION=v1.10.2
 RUN git clone --branch ${GITHUBCLI_VERSION} --single-branch --depth 1 https://github.com/cli/cli.git .
 RUN make && \
     chmod 500 bin/gh
