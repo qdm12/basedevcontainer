@@ -37,27 +37,7 @@ jobs:
             --push \
             .
       - run: curl -X POST https://hooks.microbadger.com/images/qmcgaw/basedevcontainer/bEP2lBLpFjot59Gyxz4SuMvtj4M= || exit 0
-  debian-9:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Buildx setup
-        uses: crazy-max/ghaction-docker-buildx@v1
-      - name: Dockerhub login
-        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u qmcgaw --password-stdin 2>&1
-      - name: Buildx
-        run: |
-          docker buildx build \
-            -f debian.Dockerfile \
-            --build-arg DEBIAN_VERSION=stretch-slim \
-            --progress plain \
-            --platform=linux/amd64 \
-            --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-            --build-arg VCS_REF=`git rev-parse --short HEAD` \
-            --build-arg VERSION=debian-9-${GITHUB_REF##*/} \
-            -t qmcgaw/basedevcontainer:debian-9-${GITHUB_REF##*/} \
-            --push \
-            .
+
   debian-10:
     runs-on: ubuntu-latest
     steps:
@@ -77,27 +57,5 @@ jobs:
             --build-arg VCS_REF=`git rev-parse --short HEAD` \
             --build-arg VERSION=debian-10-${GITHUB_REF##*/} \
             -t qmcgaw/basedevcontainer:debian-${GITHUB_REF##*/} \
-            -t qmcgaw/basedevcontainer:debian-10-${GITHUB_REF##*/} \
-            --push \
-            .
-  debian-11:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Buildx setup
-        uses: crazy-max/ghaction-docker-buildx@v1
-      - name: Dockerhub login
-        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u qmcgaw --password-stdin 2>&1
-      - name: Buildx
-        run: |
-          docker buildx build \
-            -f debian.Dockerfile \
-            --build-arg DEBIAN_VERSION=bullseye-slim \
-            --progress plain \
-            --platform=linux/amd64 \
-            --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-            --build-arg VCS_REF=`git rev-parse --short HEAD` \
-            --build-arg VERSION=debian-11-${GITHUB_REF##*/} \
-            -t qmcgaw/basedevcontainer:debian-11-${GITHUB_REF##*/} \
             --push \
             .
