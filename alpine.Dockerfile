@@ -110,13 +110,17 @@ RUN apk add -q --update --progress --no-cache shadow && \
     usermod --shell /bin/zsh root && \
     apk del shadow
 
+RUN git config --global advice.detachedHead false
+
 COPY shell/.zshrc shell/.welcome.sh /root/
-RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh 2>&1
+RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 
 ARG POWERLEVEL10K_VERSION=v1.14.6
 COPY shell/.p10k.zsh /root/
-RUN git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k 2>&1 && \
+RUN git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k && \
     rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git
+
+RUN git config --global advice.detachedHead true
 
 # Docker CLI
 COPY --from=docker /tmp/docker /usr/local/bin/
