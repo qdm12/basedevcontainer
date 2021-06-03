@@ -13,7 +13,7 @@ ARG TARGETPLATFORM
 
 FROM gobuilder AS docker
 WORKDIR /go/src/github.com/docker/cli
-ARG DOCKER_VERSION=v20.10.6
+ARG DOCKER_VERSION=v20.10.7
 RUN git clone --depth 1 --branch ${DOCKER_VERSION} https://github.com/docker/cli.git .
 RUN GITCOMMIT="$(git rev-parse --short HEAD)" && \
     BUILDTIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" && \
