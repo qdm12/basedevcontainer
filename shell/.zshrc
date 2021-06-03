@@ -11,6 +11,9 @@ source ~/.p10k.zsh
 
 [ -f ~/.windows.sh ] && source ~/.windows.sh
 
+mkdir -p ~/.docker/cli-plugins/
+[ ! -f ~/.docker/cli-plugins/docker-compose ] && ln -s /usr/local/bin/docker-compose-plugin ~/.docker/cli-plugins/docker-compose
+
 # SSH key check
 list="$(ls -al ~/.ssh)"
 [ "$?" = 0 ] && SSHRSA_OK=yes

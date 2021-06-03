@@ -1,19 +1,74 @@
 ARG ALPINE_VERSION=3.13
-ARG DOCKER_VERSION=20.10.6
-ARG DOCKER_COMPOSE_VERSION=alpine-1.29.2
-ARG GOLANG_VERSION=1.16
 
-FROM docker:${DOCKER_VERSION} AS docker-cli
-FROM docker/compose:${DOCKER_COMPOSE_VERSION} AS docker-compose
+ARG BUILDPLATFORM=linux/amd64
 
-FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} AS gobuilder
-RUN apk add --no-cache --update -q git make
+ARG GO_VERSION=1.16
+FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS gobuilder
 ENV CGO_ENABLED=0
-WORKDIR /githubcli
+RUN apk add --no-cache git && \
+    git config --global advice.detachedHead false
+COPY --from=qmcgaw/xcputranslate:v0.4.0 /xcputranslate /usr/local/bin/xcputranslate
+ARG TARGETPLATFORM
+
+FROM gobuilder AS docker
+WORKDIR /go/src/github.com/docker/cli
+ARG DOCKER_VERSION=v20.10.6
+RUN git clone --depth 1 --branch ${DOCKER_VERSION} https://github.com/docker/cli.git .
+RUN GITCOMMIT="$(git rev-parse --short HEAD)" && \
+    BUILDTIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" && \
+    GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate -field arm -targetplatform ${TARGETPLATFORM})" \
+    GO111MODULE=off \
+    go build -trimpath -ldflags="-s -w \
+    -X 'github.com/docker/cli/cli/version.GitCommit=${GITCOMMIT}' \
+    -X 'github.com/docker/cli/cli/version.BuildTime=${BUILDTIME}' \
+    -X 'github.com/docker/cli/cli/version.Version=${DOCKER_VERSION}' \
+    " -o /tmp/docker cmd/docker/docker.go && \
+    chmod 500 /tmp/docker
+
+FROM gobuilder AS docker-compose
+ARG DOCKER_COMPOSE_PLUGIN_VERSION=v2.0.0-beta.3
+WORKDIR /tmp/build
+RUN git clone --depth 1 --branch ${DOCKER_COMPOSE_PLUGIN_VERSION} https://github.com/docker/compose-cli.git . && \
+    GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate -field arm -targetplatform ${TARGETPLATFORM})" \
+    go build -trimpath -ldflags="-s -w \
+    -X 'github.com/docker/compose-cli/internal.Version=${DOCKER_COMPOSE_PLUGIN_VERSION}' \
+    " -o /tmp/docker-compose && \
+    chmod 500 /tmp/docker-compose
+
+FROM gobuilder AS logo-ls
+ARG LOGOLS_VERSION=v1.3.7
+WORKDIR /tmp/build
+RUN git clone --depth 1 --branch ${LOGOLS_VERSION} https://github.com/Yash-Handa/logo-ls.git . && \
+    GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate -field arm -targetplatform ${TARGETPLATFORM})" \
+    go build -trimpath -ldflags="-s -w" -o /tmp/logo-ls && \
+    chmod 500 /tmp/logo-ls
+
+FROM gobuilder AS bit
+ARG BIT_VERSION=v1.1.1
+WORKDIR /tmp/build
+RUN git clone --depth 1 --branch ${BIT_VERSION} https://github.com/chriswalz/bit.git . && \
+    GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate -field arm -targetplatform ${TARGETPLATFORM})" \
+    go build -trimpath -ldflags="-s -w \
+    -X 'main.version=${BIT_VERSION}' \
+    " -o /tmp/bit && \
+    chmod 500 /tmp/bit
+
+FROM gobuilder AS gh
 ARG GITHUBCLI_VERSION=v1.10.2
-RUN git clone --branch ${GITHUBCLI_VERSION} --single-branch --depth 1 https://github.com/cli/cli.git .
-RUN make && \
-    chmod 500 bin/gh
+WORKDIR /tmp/build
+RUN git clone --depth 1 --branch ${GITHUBCLI_VERSION} https://github.com/cli/cli.git . && \
+    GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate -field arm -targetplatform ${TARGETPLATFORM})" \
+    BUILD_DATE="$(date +%F)" \
+    go build -trimpath -ldflags "-s -w \
+    -X 'github.com/cli/cli/internal/build.Date=${BUILD_DATE}' \
+    -X 'github.com/cli/cli/internal/build.Version=${GITHUBCLI_VERSION}' \
+    " -o /tmp/gh ./cmd/gh && \
+    chmod 500 /tmp/gh
 
 FROM alpine:${ALPINE_VERSION}
 ARG BUILD_DATE
@@ -63,26 +118,24 @@ COPY shell/.p10k.zsh /root/
 RUN git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k 2>&1 && \
     rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git
 
-ARG LOGO_LS_VERSION=1.3.7
-RUN wget -qO- "https://github.com/Yash-Handa/logo-ls/releases/download/v$LOGO_LS_VERSION/logo-ls_Linux_x86_64.tar.gz" | \
-    tar -xzC /usr/local/bin --strip-components=1 logo-ls_Linux_x86_64/logo-ls && \
-    chmod 500 /usr/local/bin/logo-ls && \
-    echo "alias ls='logo-ls'" >> /root/.zshrc
+# Docker CLI
+COPY --from=docker /tmp/docker /usr/local/bin/
+ENV DOCKER_BUILDKIT=1
 
-# Docker and docker-compose
-COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker
-COPY --from=docker-compose /usr/local/bin/docker-compose /usr/local/bin/docker-compose
-ENV DOCKER_BUILDKIT=1 \
-    COMPOSE_DOCKER_CLI_BUILD=1
+# Docker compose
+COPY --from=docker-compose /tmp/docker-compose /usr/local/bin/
+ENV COMPOSE_DOCKER_CLI_BUILD=1
+RUN echo "alias docker-compose='docker compose'" >> /root/.zshrc
+
+# Logo ls
+COPY --from=logo-ls /tmp/logo-ls /usr/local/bin/
+RUN echo "alias ls='logo-ls'" >> /root/.zshrc
 
 # Bit
-ARG BIT_VERSION=1.1.1
-RUN wget -qO- https://github.com/chriswalz/bit/releases/download/v${BIT_VERSION}/bit_${BIT_VERSION}_linux_amd64.tar.gz | \
-    tar -xzC /usr/local/bin bit && \
-    echo "y" | bit complete
+COPY --from=bit /tmp/bit /usr/local/bin/
+RUN echo "y" | bit complete
 
-# Github CLI
-COPY --from=gobuilder /githubcli/bin/gh /usr/local/bin/gh
+COPY --from=gh /tmp/gh /usr/local/bin/
 
 # VSCode specific (speed up setup)
 RUN apk add -q --update --progress --no-cache libstdc++
