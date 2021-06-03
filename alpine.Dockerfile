@@ -58,7 +58,7 @@ RUN git clone --depth 1 --branch ${BIT_VERSION} https://github.com/chriswalz/bit
     chmod 500 /tmp/bit
 
 FROM gobuilder AS gh
-ARG GITHUBCLI_VERSION=v1.10.2
+ARG GITHUBCLI_VERSION=v1.11.0
 WORKDIR /tmp/build
 RUN git clone --depth 1 --branch ${GITHUBCLI_VERSION} https://github.com/cli/cli.git . && \
     GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
