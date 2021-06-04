@@ -19,7 +19,7 @@
 
 - `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.13 in **160MB**
 - `qmcgaw/basedevcontainer:debian` based on Debian Buster Slim in **313MB**
-- All images are compatible with the `amd64` cpu architecture only
+- All images are compatible with `amd64`, `386`, `arm64`, `armv7`, `armv6` and `ppc64le` CPU architectures
 - Contains the packages:
     - `libstdc++`: needed by the VS code server
     - `zsh`: main shell instead of `/bin/sh`
