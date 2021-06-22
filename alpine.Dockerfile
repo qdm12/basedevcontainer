@@ -7,7 +7,7 @@ FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS g
 ENV CGO_ENABLED=0
 RUN apk add --no-cache git && \
     git config --global advice.detachedHead false
-COPY --from=qmcgaw/xcputranslate:v0.4.0 /xcputranslate /usr/local/bin/xcputranslate
+COPY --from=qmcgaw/xcputranslate:v0.6.0 /xcputranslate /usr/local/bin/xcputranslate
 WORKDIR /tmp/build
 ARG TARGETPLATFORM
 
@@ -17,8 +17,8 @@ ARG DOCKER_VERSION=v20.10.7
 RUN git clone --depth 1 --branch ${DOCKER_VERSION} https://github.com/docker/cli.git .
 RUN GITCOMMIT="$(git rev-parse --short HEAD)" && \
     BUILDTIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" && \
-    GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
-    GOARM="$(xcputranslate -field arm -targetplatform ${TARGETPLATFORM})" \
+    GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     GO111MODULE=off \
     go build -trimpath -ldflags="-s -w \
     -X 'github.com/docker/cli/cli/version.GitCommit=${GITCOMMIT}' \
@@ -30,8 +30,8 @@ RUN GITCOMMIT="$(git rev-parse --short HEAD)" && \
 FROM gobuilder AS docker-compose
 ARG DOCKER_COMPOSE_PLUGIN_VERSION=v2.0.0-beta.3
 RUN git clone --depth 1 --branch ${DOCKER_COMPOSE_PLUGIN_VERSION} https://github.com/docker/compose-cli.git .
-RUN GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
-    GOARM="$(xcputranslate -field arm -targetplatform ${TARGETPLATFORM})" \
+RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -trimpath -ldflags="-s -w \
     -X 'github.com/docker/compose-cli/internal.Version=${DOCKER_COMPOSE_PLUGIN_VERSION}' \
     " -o /tmp/docker-compose && \
@@ -40,16 +40,16 @@ RUN GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
 FROM gobuilder AS logo-ls
 ARG LOGOLS_VERSION=v1.3.7
 RUN git clone --depth 1 --branch ${LOGOLS_VERSION} https://github.com/Yash-Handa/logo-ls.git .
-RUN GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
-    GOARM="$(xcputranslate -field arm -targetplatform ${TARGETPLATFORM})" \
+RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -trimpath -ldflags="-s -w" -o /tmp/logo-ls && \
     chmod 500 /tmp/logo-ls
 
 FROM gobuilder AS bit
 ARG BIT_VERSION=v1.1.1
 RUN git clone --depth 1 --branch ${BIT_VERSION} https://github.com/chriswalz/bit.git .
-RUN GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
-    GOARM="$(xcputranslate -field arm -targetplatform ${TARGETPLATFORM})" \
+RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -trimpath -ldflags="-s -w \
     -X 'main.version=${BIT_VERSION}' \
     " -o /tmp/bit && \
@@ -58,8 +58,8 @@ RUN GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
 FROM gobuilder AS gh
 ARG GITHUBCLI_VERSION=v1.11.0
 RUN git clone --depth 1 --branch ${GITHUBCLI_VERSION} https://github.com/cli/cli.git .
-RUN GOARCH="$(xcputranslate -field arch -targetplatform ${TARGETPLATFORM})" \
-    GOARM="$(xcputranslate -field arm -targetplatform ${TARGETPLATFORM})" \
+RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     BUILD_DATE="$(date +%F)" \
     go build -trimpath -ldflags "-s -w \
     -X 'github.com/cli/cli/internal/build.Date=${BUILD_DATE}' \
