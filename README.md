@@ -17,8 +17,8 @@
 
 ## Features
 
-- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.13 in **160MB**
-- `qmcgaw/basedevcontainer:debian` based on Debian Buster Slim in **313MB**
+- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.13 in **201MB**
+- `qmcgaw/basedevcontainer:debian` based on Debian Buster Slim in **354MB**
 - All images are compatible with `amd64`, `386`, `arm64`, `armv7`, `armv6` and `ppc64le` CPU architectures
 - Contains the packages:
     - `libstdc++`: needed by the VS code server
@@ -29,7 +29,8 @@
 - Contains the binaries:
     - [`gh`](https://github.com/cli/cli): interact with Github with the terminal
     - `docker`
-    - `docker-compose`
+    - `docker-compose` and `docker compose` docker plugin
+    - [`docker buildx`](https://github.com/docker/buildx) docker plugin
     - [`bit`](https://github.com/chriswalz/bit)
 - Custom integrated terminal
     - Based on zsh and [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)

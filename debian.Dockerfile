@@ -39,6 +39,19 @@ RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFO
     " -o /tmp/docker-compose && \
     chmod 500 /tmp/docker-compose
 
+FROM gobuilder AS buildx
+ARG BUILDX_VERSION=v0.5.1
+RUN git clone --depth 1 --branch ${BUILDX_VERSION} https://github.com/docker/buildx.git .
+RUN go mod download
+RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
+    GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
+    go build -trimpath -ldflags="-s -w \
+    -X 'github.com/docker/buildx/version.Version=${BUILDX_VERSION}' \
+    -X 'github.com/docker/buildx/version.Revision=$(git rev-parse HEAD)' \
+    -X 'github.com/docker/buildx/version.Package=github.com/docker/buildx' \
+    " -o /tmp/buildx ./cmd/buildx && \
+    chmod 500 /tmp/buildx
+
 FROM gobuilder AS logo-ls
 ARG LOGOLS_VERSION=v1.3.7
 RUN git clone --depth 1 --branch ${LOGOLS_VERSION} https://github.com/Yash-Handa/logo-ls.git .
@@ -142,6 +155,9 @@ ENV DOCKER_BUILDKIT=1
 COPY --from=docker-compose /tmp/docker-compose /usr/local/bin/
 ENV COMPOSE_DOCKER_CLI_BUILD=1
 RUN echo "alias docker-compose='docker compose'" >> /root/.zshrc
+
+# Buildx plugin
+COPY --from=buildx /tmp/buildx /usr/local/bin/
 
 # Logo ls
 COPY --from=logo-ls /tmp/logo-ls /usr/local/bin/
