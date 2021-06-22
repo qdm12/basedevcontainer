@@ -30,6 +30,7 @@ RUN GITCOMMIT="$(git rev-parse --short HEAD)" && \
 FROM gobuilder AS docker-compose
 ARG DOCKER_COMPOSE_PLUGIN_VERSION=v2.0.0-beta.3
 RUN git clone --depth 1 --branch ${DOCKER_COMPOSE_PLUGIN_VERSION} https://github.com/docker/compose-cli.git .
+RUN go mod download
 RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
     GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -trimpath -ldflags="-s -w \
@@ -40,6 +41,7 @@ RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFO
 FROM gobuilder AS logo-ls
 ARG LOGOLS_VERSION=v1.3.7
 RUN git clone --depth 1 --branch ${LOGOLS_VERSION} https://github.com/Yash-Handa/logo-ls.git .
+RUN go mod download
 RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
     GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -trimpath -ldflags="-s -w" -o /tmp/logo-ls && \
@@ -48,6 +50,7 @@ RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFO
 FROM gobuilder AS bit
 ARG BIT_VERSION=v1.1.1
 RUN git clone --depth 1 --branch ${BIT_VERSION} https://github.com/chriswalz/bit.git .
+RUN go mod download
 RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
     GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -trimpath -ldflags="-s -w \
@@ -58,6 +61,7 @@ RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFO
 FROM gobuilder AS gh
 ARG GITHUBCLI_VERSION=v1.11.0
 RUN git clone --depth 1 --branch ${GITHUBCLI_VERSION} https://github.com/cli/cli.git .
+RUN go mod download
 RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
     GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     BUILD_DATE="$(date +%F)" \
