@@ -1,20 +1,22 @@
 ARG ALPINE_VERSION=3.13
+ARG GO_VERSION=1.16
 
 ARG BUILDPLATFORM=linux/amd64
 
-ARG GO_VERSION=1.16
+FROM --platform=${BUILDPLATFORM} qmcgaw/xcputranslate:v0.6.0 AS xcputranslate
+
 FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS gobuilder
 ENV CGO_ENABLED=0
 RUN apk add --no-cache git && \
     git config --global advice.detachedHead false
-COPY --from=qmcgaw/xcputranslate:v0.6.0 /xcputranslate /usr/local/bin/xcputranslate
+COPY --from=xcputranslate /xcputranslate /usr/local/bin/xcputranslate
 WORKDIR /tmp/build
-ARG TARGETPLATFORM
 
 FROM gobuilder AS docker
 WORKDIR /go/src/github.com/docker/cli
 ARG DOCKER_VERSION=v20.10.7
 RUN git clone --depth 1 --branch ${DOCKER_VERSION} https://github.com/docker/cli.git .
+ARG TARGETPLATFORM
 RUN GITCOMMIT="$(git rev-parse --short HEAD)" && \
     BUILDTIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" && \
     GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
@@ -31,6 +33,7 @@ FROM gobuilder AS docker-compose
 ARG DOCKER_COMPOSE_PLUGIN_VERSION=v2.0.0-beta.3
 RUN git clone --depth 1 --branch ${DOCKER_COMPOSE_PLUGIN_VERSION} https://github.com/docker/compose-cli.git .
 RUN go mod download
+ARG TARGETPLATFORM
 RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
     GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -trimpath -ldflags="-s -w \
@@ -42,6 +45,7 @@ FROM gobuilder AS buildx
 ARG BUILDX_VERSION=v0.5.1
 RUN git clone --depth 1 --branch ${BUILDX_VERSION} https://github.com/docker/buildx.git .
 RUN go mod download
+ARG TARGETPLATFORM
 RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
     GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -trimpath -ldflags="-s -w \
@@ -55,6 +59,7 @@ FROM gobuilder AS logo-ls
 ARG LOGOLS_VERSION=v1.3.7
 RUN git clone --depth 1 --branch ${LOGOLS_VERSION} https://github.com/Yash-Handa/logo-ls.git .
 RUN go mod download
+ARG TARGETPLATFORM
 RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
     GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -trimpath -ldflags="-s -w" -o /tmp/logo-ls && \
@@ -64,6 +69,7 @@ FROM gobuilder AS bit
 ARG BIT_VERSION=v1.1.1
 RUN git clone --depth 1 --branch ${BIT_VERSION} https://github.com/chriswalz/bit.git .
 RUN go mod download
+ARG TARGETPLATFORM
 RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
     GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     go build -trimpath -ldflags="-s -w \
@@ -75,6 +81,7 @@ FROM gobuilder AS gh
 ARG GITHUBCLI_VERSION=v1.11.0
 RUN git clone --depth 1 --branch ${GITHUBCLI_VERSION} https://github.com/cli/cli.git .
 RUN go mod download
+ARG TARGETPLATFORM
 RUN GOARCH="$(xcputranslate translate -field arch -targetplatform ${TARGETPLATFORM})" \
     GOARM="$(xcputranslate translate -field arm -targetplatform ${TARGETPLATFORM})" \
     BUILD_DATE="$(date +%F)" \
