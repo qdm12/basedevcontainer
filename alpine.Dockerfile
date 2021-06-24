@@ -70,7 +70,8 @@ RUN echo "alias ls='logo-ls'" >> /root/.zshrc
 
 # Bit
 COPY --from=qmcgaw/binpot:bit-v1.1.1 /bin /usr/local/bin/bit
-RUN echo "y" | bit complete
+ARG TARGETPLATFORM
+RUN if [ "${TARGETPLATFORM}" != "linux/s390x" ]; then echo "y" | bit complete; fi
 
 COPY --from=qmcgaw/binpot:gh-v1.11.0 /bin /usr/local/bin/gh
 
