@@ -53,7 +53,7 @@ RUN git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https:
 RUN git config --global advice.detachedHead true
 
 # Docker CLI
-COPY --from=qmcgaw/binpot:docker-v20.10.7 /bin /usr/local/bin/
+COPY --from=qmcgaw/binpot:docker-v20.10.7 /bin /usr/local/bin/docker
 ENV DOCKER_BUILDKIT=1
 
 # Docker compose
