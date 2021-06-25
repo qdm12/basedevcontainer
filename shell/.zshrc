@@ -15,10 +15,8 @@ mkdir -p ~/.docker/cli-plugins/
 [ ! -f ~/.docker/cli-plugins/docker-compose ] && ln -s /usr/local/bin/docker-compose ~/.docker/cli-plugins/docker-compose
 [ ! -f ~/.docker/cli-plugins/docker-buildx ] && ln -s /usr/local/bin/buildx ~/.docker/cli-plugins/docker-buildx
 
-# SSH key check
-list="$(ls -al ~/.ssh)"
-[ "$?" = 0 ] && SSHRSA_OK=yes
-[ -z $SSHRSA_OK ] && >&2 echo "[WARNING] No id_rsa SSH private key found, SSH functionalities might not work"
+# SSH directory check
+[ -d ~/.ssh ] ||  >&2 echo "[WARNING] No SSH directory found, SSH functionalities might not work"
 
 # Timezone check
 [ -z $TZ ] && >&2 echo "[WARNING] TZ environment variable not set, time might be wrong!"
