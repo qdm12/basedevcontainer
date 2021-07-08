@@ -79,7 +79,7 @@ COPY --from=qmcgaw/binpot:logo-ls-v1.3.7 /bin /usr/local/bin/logo-ls
 RUN echo "alias ls='logo-ls'" >> /root/.zshrc
 
 # Bit
-COPY --from=qmcgaw/binpot:bit-v1.1.1 /bin /usr/local/bin/bit
+COPY --from=qmcgaw/binpot:bit-v1.1.2 /bin /usr/local/bin/bit
 ARG TARGETPLATFORM
 RUN if [ "${TARGETPLATFORM}" != "linux/s390x" ]; then echo "y" | bit complete; fi
 
