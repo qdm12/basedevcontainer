@@ -1,5 +1,19 @@
 ARG DEBIAN_VERSION=buster-slim
 
+ARG DOCKER_VERSION=v20.10.7
+ARG COMPOSE_VERSION=v2.0.0-beta.4
+ARG BUILDX_VERSION=v0.5.1
+ARG LOGOLS_VERSION=v1.3.7
+ARG BIT_VERSION=v1.1.2
+ARG GH_VERSION=v1.12.1
+
+FROM qmcgaw/binpot:docker-${DOCKER_VERSION} AS docker
+FROM qmcgaw/binpot:compose-${COMPOSE_VERSION} AS compose
+FROM qmcgaw/binpot:buildx-${BUILDX_VERSION} AS buildx
+FROM qmcgaw/binpot:logo-ls-${LOGOLS_VERSION} AS logo-ls
+FROM qmcgaw/binpot:bit-${BIT_VERSION} AS bit
+FROM qmcgaw/binpot:gh-${GH_VERSION} AS gh
+
 FROM debian:${DEBIAN_VERSION}
 ARG BUILD_DATE
 ARG VCS_REF
@@ -63,24 +77,24 @@ RUN git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https:
 RUN git config --global advice.detachedHead true
 
 # Docker CLI
-COPY --from=qmcgaw/binpot:docker-v20.10.7 /bin /usr/local/bin/docker
+COPY --from=docker /bin /usr/local/bin/docker
 ENV DOCKER_BUILDKIT=1
 
 # Docker compose
-COPY --from=qmcgaw/binpot:compose-v2.0.0-beta.4 /bin /usr/local/bin/docker-compose
+COPY --from=compose /bin /usr/local/bin/docker-compose
 ENV COMPOSE_DOCKER_CLI_BUILD=1
 RUN echo "alias docker-compose='docker compose'" >> /root/.zshrc
 
 # Buildx plugin
-COPY --from=qmcgaw/binpot:buildx-v0.5.1 /bin /usr/local/bin/buildx
+COPY --from=buildx /bin /usr/local/bin/buildx
 
 # Logo ls
-COPY --from=qmcgaw/binpot:logo-ls-v1.3.7 /bin /usr/local/bin/logo-ls
+COPY --from=logo-ls /bin /usr/local/bin/logo-ls
 RUN echo "alias ls='logo-ls'" >> /root/.zshrc
 
 # Bit
-COPY --from=qmcgaw/binpot:bit-v1.1.2 /bin /usr/local/bin/bit
+COPY --from=bit /bin /usr/local/bin/bit
 ARG TARGETPLATFORM
 RUN if [ "${TARGETPLATFORM}" != "linux/s390x" ]; then echo "y" | bit complete; fi
 
-COPY --from=qmcgaw/binpot:gh-v1.12.1 /bin /usr/local/bin/gh
+COPY --from=gh /bin /usr/local/bin/gh
