@@ -83,4 +83,4 @@ COPY --from=qmcgaw/binpot:bit-v1.1.2 /bin /usr/local/bin/bit
 ARG TARGETPLATFORM
 RUN if [ "${TARGETPLATFORM}" != "linux/s390x" ]; then echo "y" | bit complete; fi
 
-COPY --from=qmcgaw/binpot:gh-v1.11.0 /bin /usr/local/bin/gh
+COPY --from=qmcgaw/binpot:gh-v1.12.1 /bin /usr/local/bin/gh
