@@ -74,8 +74,3 @@ jobs:
             qmcgaw/basedevcontainer:latest
             qmcgaw/basedevcontainer:alpine
           push: true
-
-      - if: github.event_name == 'push' && github.event.ref == 'refs/heads/master'
-        name: Microbadger hook
-        run: curl -X POST https://hooks.microbadger.com/images/qmcgaw/basedevcontainer/bEP2lBLpFjot59Gyxz4SuMvtj4M=
-        continue-on-error: true
