@@ -1,6 +1,6 @@
 # Base Dev Container
 
-**Base Alpine development container for Visual Studio Code, used as base image by other images**
+Base Alpine development container for Visual Studio Code, used as base image by other images
 
 <img height="300" src="https://raw.githubusercontent.com/qdm12/basedevcontainer/master/title.svg?sanitize=true">
 
