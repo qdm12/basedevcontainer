@@ -15,20 +15,20 @@ FROM qmcgaw/binpot:bit-${BIT_VERSION} AS bit
 FROM qmcgaw/binpot:gh-${GH_VERSION} AS gh
 
 FROM alpine:${ALPINE_VERSION}
-ARG BUILD_DATE
-ARG VCS_REF
+ARG CREATED
+ARG COMMIT
 ARG VERSION=local
 LABEL \
     org.opencontainers.image.authors="quentin.mcgaw@gmail.com" \
-    org.opencontainers.image.created=$BUILD_DATE \
+    org.opencontainers.image.created=$CREATED \
     org.opencontainers.image.version=$VERSION \
-    org.opencontainers.image.revision=$VCS_REF \
+    org.opencontainers.image.revision=$COMMIT \
     org.opencontainers.image.url="https://github.com/qdm12/basedevcontainer" \
     org.opencontainers.image.documentation="https://github.com/qdm12/basedevcontainer" \
     org.opencontainers.image.source="https://github.com/qdm12/basedevcontainer" \
     org.opencontainers.image.title="Base Dev container" \
     org.opencontainers.image.description="Base Alpine development container for Visual Studio Code Remote Containers development"
-ENV BASE_VERSION="${VERSION}-${BUILD_DATE}-${VCS_REF}"
+ENV BASE_VERSION="${VERSION}-${CREATED}-${COMMIT}"
 
 # CA certificates
 RUN apk add -q --update --progress --no-cache ca-certificates

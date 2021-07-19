@@ -70,8 +70,8 @@ jobs:
           file: alpine.Dockerfile
           platforms: ${{ steps.vars.outputs.platforms }}
           build-args: |
-            BUILD_DATE=${{ steps.vars.outputs.build_date }}
-            VCS_REF=${{ steps.vars.outputs.commit }}
+            CREATED=${{ steps.vars.outputs.created }}
+            COMMIT=${{ steps.vars.outputs.commit }}
             VERSION=${{ steps.vars.outputs.version }}
           tags: |
             qmcgaw/godevcontainer:${{ steps.vars.outputs.version }}
