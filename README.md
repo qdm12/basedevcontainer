@@ -27,6 +27,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 ![Code size](https://img.shields.io/github/languages/code-size/qdm12/basedevcontainer)
 ![GitHub repo size](https://img.shields.io/github/repo-size/qdm12/basedevcontainer)
 
+[![MIT](https://img.shields.io/github/license/qdm12/basedevcontainer)](https://github.com/qdm12/basedevcontainer/master/LICENSE)
 ![Visitors count](https://visitor-badge.laobi.icu/badge?page_id=basedevcontainer.readme)
 
 ## Features
@@ -151,7 +152,3 @@ You can build and extend the Docker development image to suit your needs.
 - [ ] Fonts for host OS for the VS code shell
 - [ ] Gifs and images
 - [ ] Install VS code server and extensions in image, waiting for [this issue](https://github.com/microsoft/vscode-remote-release/issues/1718)
-
-## License
-
-This repository is under an [MIT license](https://github.com/qdm12/basedevcontainer/master/LICENSE) unless indicated otherwise.
