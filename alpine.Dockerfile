@@ -6,6 +6,7 @@ ARG BUILDX_VERSION=v0.6.0
 ARG LOGOLS_VERSION=v1.3.7
 ARG BIT_VERSION=v1.1.2
 ARG GH_VERSION=v1.12.1
+ARG DEVTAINR_VERSION=v0.6.0
 
 FROM qmcgaw/binpot:docker-${DOCKER_VERSION} AS docker
 FROM qmcgaw/binpot:compose-${COMPOSE_VERSION} AS compose
@@ -13,6 +14,7 @@ FROM qmcgaw/binpot:buildx-${BUILDX_VERSION} AS buildx
 FROM qmcgaw/binpot:logo-ls-${LOGOLS_VERSION} AS logo-ls
 FROM qmcgaw/binpot:bit-${BIT_VERSION} AS bit
 FROM qmcgaw/binpot:gh-${GH_VERSION} AS gh
+FROM qmcgaw/devtainr:${DEVTAINR_VERSION} AS devtainr
 
 FROM alpine:${ALPINE_VERSION}
 ARG CREATED
@@ -88,6 +90,8 @@ ARG TARGETPLATFORM
 RUN if [ "${TARGETPLATFORM}" != "linux/s390x" ]; then echo "y" | bit complete; fi
 
 COPY --from=gh /bin /usr/local/bin/gh
+
+COPY --from=devtainr /devtainr /usr/local/bin/devtainr
 
 # VSCode specific (speed up setup)
 RUN apk add -q --update --progress --no-cache libstdc++

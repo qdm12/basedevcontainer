@@ -47,6 +47,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
     - `docker-compose` and `docker compose` docker plugin
     - [`docker buildx`](https://github.com/docker/buildx) docker plugin
     - [`bit`](https://github.com/chriswalz/bit)
+    - [`devtainr`](https://github.com/qdm12/devtainr)
 - Custom integrated terminal
     - Based on zsh and [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
     - Uses the [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
