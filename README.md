@@ -36,26 +36,26 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 - `qmcgaw/basedevcontainer:debian` based on Debian Buster Slim in **354MB**
 - All images are compatible with `amd64`, `386`, `arm64`, `armv7`, `armv6` and `ppc64le` CPU architectures
 - Contains the packages:
-    - `libstdc++`: needed by the VS code server
-    - `zsh`: main shell instead of `/bin/sh`
-    - `git`: interact with Git repositories
-    - `openssh-client`: use SSH keys
-    - `nano`: edit files from the terminal
+  - `libstdc++`: needed by the VS code server
+  - `zsh`: main shell instead of `/bin/sh`
+  - `git`: interact with Git repositories
+  - `openssh-client`: use SSH keys
+  - `nano`: edit files from the terminal
 - Contains the binaries:
-    - [`gh`](https://github.com/cli/cli): interact with Github with the terminal
-    - `docker`
-    - `docker-compose` and `docker compose` docker plugin
-    - [`docker buildx`](https://github.com/docker/buildx) docker plugin
-    - [`bit`](https://github.com/chriswalz/bit)
-    - [`devtainr`](https://github.com/qdm12/devtainr)
+  - [`gh`](https://github.com/cli/cli): interact with Github with the terminal
+  - `docker`
+  - `docker-compose` and `docker compose` docker plugin
+  - [`docker buildx`](https://github.com/docker/buildx) docker plugin
+  - [`bit`](https://github.com/chriswalz/bit)
+  - [`devtainr`](https://github.com/qdm12/devtainr)
 - Custom integrated terminal
-    - Based on zsh and [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
-    - Uses the [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
-    - With [Logo LS](https://github.com/Yash-Handa/logo-ls) as a replacement for `ls`
+  - Based on zsh and [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
+  - Uses the [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
+  - With [Logo LS](https://github.com/Yash-Handa/logo-ls) as a replacement for `ls`
     - Shows information on login; easily extensible
 - Cross platform
-    - Easily bind mount your SSH keys to use with **git**
-    - Manage your host Docker from within the dev container on Linux, MacOS and Windows
+  - Easily bind mount your SSH keys to use with **git**
+  - Manage your host Docker from within the dev container on Linux, MacOS and Windows
 - Docker uses buildkit by default, with the latest Docker client binary.
 - Extensible with docker-compose.yml
 - Supports SSH keys with Windows (Hyperv) bind mounts at /tmp/.ssh
@@ -63,7 +63,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 ## Requirements
 
 - [Docker](https://www.docker.com/products/docker-desktop) installed and running
-    - If you don't use Linux, share the directories `~/.ssh` and the directory of your project with Docker Desktop
+  - If you don't use Linux, share the directories `~/.ssh` and the directory of your project with Docker Desktop
 - [Docker Compose](https://docs.docker.com/compose/install/) installed
 - [VS code](https://code.visualstudio.com/download) installed
 - [VS code remote containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed
