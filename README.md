@@ -4,8 +4,8 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 
 <img height="300" src="https://raw.githubusercontent.com/qdm12/basedevcontainer/master/title.svg">
 
-[![Alpine](https://github.com/qdm12/godevcontainer/actions/workflows/alpine.yml/badge.svg)](https://github.com/qdm12/godevcontainer/actions/workflows/alpine.yml)
-[![Debian](https://github.com/qdm12/godevcontainer/actions/workflows/debian.yml/badge.svg)](https://github.com/qdm12/godevcontainer/actions/workflows/debian.yml)
+[![Alpine](https://github.com/qdm12/basedevcontainer/actions/workflows/alpine.yml/badge.svg)](https://github.com/qdm12/basedevcontainer/actions/workflows/alpine.yml)
+[![Debian](https://github.com/qdm12/basedevcontainer/actions/workflows/debian.yml/badge.svg)](https://github.com/qdm12/basedevcontainer/actions/workflows/debian.yml)
 
 [![dockeri.co](https://dockeri.co/image/qmcgaw/basedevcontainer)](https://hub.docker.com/r/qmcgaw/basedevcontainer)
 

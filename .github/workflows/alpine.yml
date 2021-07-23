@@ -74,6 +74,6 @@ jobs:
             COMMIT=${{ steps.vars.outputs.commit }}
             VERSION=${{ steps.vars.outputs.version }}
           tags: |
-            qmcgaw/godevcontainer:${{ steps.vars.outputs.version }}
-            qmcgaw/godevcontainer:${{ steps.vars.outputs.alpine_version }}
+            qmcgaw/basedevcontainer:${{ steps.vars.outputs.version }}
+            qmcgaw/basedevcontainer:${{ steps.vars.outputs.alpine_version }}
           push: true

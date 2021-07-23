@@ -74,5 +74,5 @@ jobs:
             COMMIT=${{ steps.vars.outputs.commit }}
             VERSION=${{ steps.vars.outputs.version }}
           tags: |
-            qmcgaw/godevcontainer:${{ steps.vars.outputs.debian_version }}
+            qmcgaw/basedevcontainer:${{ steps.vars.outputs.debian_version }}
           push: true
