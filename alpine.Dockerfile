@@ -65,6 +65,9 @@ ARG POWERLEVEL10K_VERSION=v1.15.0
 COPY shell/.p10k.zsh /root/
 RUN git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k && \
     rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git
+RUN apk add -q --update --progress --no-cache -X "https://dl-cdn.alpinelinux.org/alpine/edge/testing" zsh-theme-powerlevel10k && \
+    cp -rf /usr/share/zsh-theme-powerlevel10k/gitstatus/* ~/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/ && \
+    rm -r /usr/share/zsh-theme-powerlevel10k
 
 RUN git config --global advice.detachedHead true
 
