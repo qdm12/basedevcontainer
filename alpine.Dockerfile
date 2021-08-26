@@ -47,7 +47,7 @@ WORKDIR /root
 
 # Setup shell for root and ${USERNAME}
 ENTRYPOINT [ "/bin/zsh" ]
-RUN apk add -q --update --progress --no-cache zsh nano
+RUN apk add -q --update --progress --no-cache zsh nano zsh-vcs
 ENV EDITOR=nano \
     LANG=en_US.UTF-8 \
     # MacOS compatibility
