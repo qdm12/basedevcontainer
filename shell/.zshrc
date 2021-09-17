@@ -39,7 +39,7 @@ where code &> /dev/null && echo "VS code server `code -v | head -n 1`"
 if [ ! -z $DOCKERSOCK_OK ]; then
   echo "Docker server `docker version --format {{.Server.Version}}` | client `docker version --format {{.Client.Version}}`"
   echo "Docker-Compose `docker compose version | cut -d' ' -f 4`"
-  alias alpine='docker run -it --rm alpine:3.13'
+  alias alpine='docker run -it --rm alpine:3.14'
 fi
 echo
 [ -f ~/.zshrc-specific.sh ] && source ~/.zshrc-specific

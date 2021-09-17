@@ -1,2 +1,2 @@
 echo "Terminal Docker tools aliases:"
-echo " * alpine: launch an interactive alpine 3.13 container"
+echo " * alpine: launch an interactive alpine 3.14 container"
