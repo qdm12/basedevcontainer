@@ -45,7 +45,7 @@ ENV TZ=
 
 # Setup Git and SSH
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends git openssh-client && \
+    apt-get install -y --no-install-recommends git git-man openssh-client && \
     rm -r /var/cache/* /var/lib/apt/lists/*
 COPY .windows.sh /root/
 
