@@ -81,7 +81,7 @@ ENV COMPOSE_DOCKER_CLI_BUILD=1
 RUN echo "alias docker-compose='docker compose'" >> /root/.zshrc
 
 # Buildx plugin
-COPY --from=buildx /bin /usr/local/bin/buildx
+COPY --from=buildx /bin /usr/libexec/docker/cli-plugins/docker-buildx
 
 # Logo ls
 COPY --from=logo-ls /bin /usr/local/bin/logo-ls
