@@ -83,7 +83,7 @@ COPY --from=docker /bin /usr/local/bin/docker
 ENV DOCKER_BUILDKIT=1
 
 # Docker compose
-COPY --from=compose /bin /usr/local/bin/docker-compose
+COPY --from=compose /bin /root/.docker/cli-plugins/docker-compose
 ENV COMPOSE_DOCKER_CLI_BUILD=1
 RUN echo "alias docker-compose='docker compose'" >> /root/.zshrc
 
