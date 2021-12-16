@@ -42,6 +42,7 @@ ENV TZ=
 # Setup Git and SSH
 RUN apk add -q --update --progress --no-cache git mandoc git-doc openssh-client
 COPY .windows.sh /root/
+RUN chmod +x /root/.windows.sh
 
 WORKDIR /root
 

@@ -48,6 +48,7 @@ RUN apt-get update -y && \
     apt-get install -y --no-install-recommends git git-man man openssh-client less && \
     rm -r /var/cache/* /var/lib/apt/lists/*
 COPY .windows.sh /root/
+RUN chmod +x /root/.windows.sh
 
 # Setup shell
 ENTRYPOINT [ "/bin/zsh" ]
