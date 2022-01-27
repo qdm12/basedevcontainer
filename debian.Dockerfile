@@ -72,7 +72,7 @@ RUN git config --global advice.detachedHead false
 COPY shell/.zshrc shell/.welcome.sh /root/
 RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 
-ARG POWERLEVEL10K_VERSION=v1.15.0
+ARG POWERLEVEL10K_VERSION=v1.16.0
 COPY shell/.p10k.zsh /root/
 RUN git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k && \
     rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git
