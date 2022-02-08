@@ -18,10 +18,6 @@ source ~/.p10k.zsh
 
 [ -f ~/.windows.sh ] && source ~/.windows.sh
 
-mkdir -p ~/.docker/cli-plugins/
-[ ! -f ~/.docker/cli-plugins/docker-compose ] && ln -s /usr/local/bin/docker-compose ~/.docker/cli-plugins/docker-compose
-[ ! -f ~/.docker/cli-plugins/docker-buildx ] && ln -s /usr/local/bin/buildx ~/.docker/cli-plugins/docker-buildx
-
 # SSH directory check
 [ -d ~/.ssh ] ||  >&2 echo "[WARNING] No SSH directory found, SSH functionalities might not work"
 
