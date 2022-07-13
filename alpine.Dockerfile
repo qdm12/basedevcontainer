@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=3.15
+ARG ALPINE_VERSION=3.16
 
 ARG DOCKER_VERSION=v20.10.17
 ARG COMPOSE_VERSION=v2.6.1
@@ -62,14 +62,9 @@ RUN git config --global advice.detachedHead false
 COPY shell/.zshrc shell/.welcome.sh /root/
 RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 
-ARG POWERLEVEL10K_VERSION=v1.16.1
 COPY shell/.p10k.zsh /root/
-RUN git clone --branch ${POWERLEVEL10K_VERSION} --single-branch --depth 1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k && \
-    rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k/.git
-RUN apk add -q --update --progress --no-cache -X "https://dl-cdn.alpinelinux.org/alpine/edge/community" zsh-theme-powerlevel10k && \
-    apk add -q --progress --no-cache -X "http://dl-4.alpinelinux.org/alpine/edge/main" libstdc++ && \
-    cp -rf /usr/share/zsh/plugins/powerlevel10k/gitstatus/* ~/.oh-my-zsh/custom/themes/powerlevel10k/gitstatus/ && \
-    rm -r /usr/share/zsh/plugins/powerlevel10k
+RUN apk add -q --update --progress --no-cache zsh-theme-powerlevel10k gitstatus && \
+    ln -s /usr/share/zsh/plugins/powerlevel10k ~/.oh-my-zsh/custom/themes/powerlevel10k
 
 RUN git config --global advice.detachedHead true
 
@@ -98,4 +93,5 @@ COPY --from=gh /bin /usr/local/bin/gh
 
 COPY --from=devtainr /devtainr /usr/local/bin/devtainr
 
-# VSCode needs libstdc++ which is already installed for gitstatusd above
+# VSCode specific (speed up setup)
+RUN apk add -q --update --progress --no-cache libstdc++
