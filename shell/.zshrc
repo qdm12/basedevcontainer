@@ -1,4 +1,4 @@
-ZSH=/root/.oh-my-zsh
+ZSH=$HOME/.oh-my-zsh
 ZSH_CUSTOM=$ZSH/custom
 POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 ZSH_THEME="powerlevel10k/powerlevel10k"
