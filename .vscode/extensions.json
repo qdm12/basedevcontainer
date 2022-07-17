@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "aaron-bond.better-comments",
+    "ms-azuretools.vscode-docker",
+    "editorconfig.editorconfig",
+    "irongeek.vscode-env",
+    "bierner.github-markdown-preview",
+    "eamodio.gitlens",
+    "davidanson.vscode-markdownlint",
+    "ibm.output-colorizer",
+    "foxundermoon.shell-format",
+    "timonwong.shellcheck",
+    "gruntfuggly.todo-tree",
+    "shardulm94.trailing-spaces"
+  ]
+}
