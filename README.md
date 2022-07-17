@@ -1,34 +1,18 @@
 # Base Dev Container
 
-Base Alpine development container for Visual Studio Code, used as base image by other images
+Base Ubuntu development container for Visual Studio Code, used as base image by other images.
 
-<img height="300" src="https://raw.githubusercontent.com/qdm12/basedevcontainer/master/title.svg">
+Forked from [qdm12/basedevcontainer](https://github.com/qdm12/basedevcontainer)
 
-[![Alpine](https://github.com/qdm12/basedevcontainer/actions/workflows/alpine.yml/badge.svg)](https://github.com/qdm12/basedevcontainer/actions/workflows/alpine.yml)
-[![Debian](https://github.com/qdm12/basedevcontainer/actions/workflows/debian.yml/badge.svg)](https://github.com/qdm12/basedevcontainer/actions/workflows/debian.yml)
+<!-- TODO: Add badges for tests -->
 
-[![dockeri.co](https://dockeri.co/image/qmcgaw/basedevcontainer)](https://hub.docker.com/r/qmcgaw/basedevcontainer)
+[![GitHub last commit](https://img.shields.io/github/last-commit/mkell43/basedevcontainer.svg)](https://github.com/mkell43/basedevcontainer/commits/main)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/mkell43/basedevcontainer.svg)](https://github.com/mkell43/basedevcontainer/graphs/contributors)
+[![GitHub closed PRs](https://img.shields.io/github/issues-pr-closed/mkell43/basedevcontainer.svg)](https://github.com/mkell43/basedevcontainer/pulls?q=is%3Apr+is%3Aclosed)
+[![GitHub issues](https://img.shields.io/github/issues/mkell43/basedevcontainer.svg)](https://github.com/mkell43/basedevcontainer/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/mkell43/basedevcontainer.svg)](https://github.com/mkell43/basedevcontainer/issues?q=is%3Aissue+is%3Aclosed)
 
-![Last release](https://img.shields.io/github/release/qdm12/basedevcontainer?label=Last%20release)
-![Last Docker tag](https://img.shields.io/docker/v/qmcgaw/basedevcontainer?sort=semver&label=Last%20Docker%20tag)
-[![Last release size](https://img.shields.io/docker/image-size/qmcgaw/basedevcontainer?sort=semver&label=Last%20released%20image)](https://hub.docker.com/r/qmcgaw/basedevcontainer/tags?page=1&ordering=last_updated)
-![GitHub last release date](https://img.shields.io/github/release-date/qdm12/basedevcontainer?label=Last%20release%20date)
-![Commits since release](https://img.shields.io/github/commits-since/qdm12/basedevcontainer/latest?sort=semver)
-
-[![Latest size](https://img.shields.io/docker/image-size/qmcgaw/basedevcontainer/latest?label=Latest%20image)](https://hub.docker.com/r/qmcgaw/basedevcontainer/tags)
-
-[![GitHub last commit](https://img.shields.io/github/last-commit/qdm12/basedevcontainer.svg)](https://github.com/qdm12/basedevcontainer/commits/master)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/qdm12/basedevcontainer.svg)](https://github.com/qdm12/basedevcontainer/graphs/contributors)
-[![GitHub closed PRs](https://img.shields.io/github/issues-pr-closed/qdm12/basedevcontainer.svg)](https://github.com/qdm12/basedevcontainer/pulls?q=is%3Apr+is%3Aclosed)
-[![GitHub issues](https://img.shields.io/github/issues/qdm12/basedevcontainer.svg)](https://github.com/qdm12/basedevcontainer/issues)
-[![GitHub closed issues](https://img.shields.io/github/issues-closed/qdm12/basedevcontainer.svg)](https://github.com/qdm12/basedevcontainer/issues?q=is%3Aissue+is%3Aclosed)
-
-[![Lines of code](https://img.shields.io/tokei/lines/github/qdm12/basedevcontainer)](https://github.com/qdm12/basedevcontainer)
-![Code size](https://img.shields.io/github/languages/code-size/qdm12/basedevcontainer)
-![GitHub repo size](https://img.shields.io/github/repo-size/qdm12/basedevcontainer)
-
-[![MIT](https://img.shields.io/github/license/qdm12/basedevcontainer)](https://github.com/qdm12/basedevcontainer/master/LICENSE)
-![Visitors count](https://visitor-badge.laobi.icu/badge?page_id=basedevcontainer.readme)
+[![MIT](https://img.shields.io/github/license/qdm12/basedevcontainer)](https://github.com/mkell43/basedevcontainer/main/LICENSE)
 
 ## Features
 
