@@ -16,8 +16,7 @@ Forked from [qdm12/basedevcontainer](https://github.com/qdm12/basedevcontainer)
 
 ## Features
 
-- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.16 in **209MB**
-- `qmcgaw/basedevcontainer:debian` based on Debian Buster Slim in **376MB**
+- `mkell43/basedevcontainer:22.04` (or `:latest`) based on Ubuntu 22.04
 - All images are compatible with `amd64`, `386`, `arm64`, `armv7`, `armv6` and `ppc64le` CPU architectures
 - Contains the packages:
   - `libstdc++`: needed by the VS code server
@@ -100,17 +99,17 @@ You can build and extend the Docker development image to suit your needs.
 - You can build the development image yourself:
 
     ```sh
-    docker build -t qmcgaw/basedevcontainer -f alpine.Dockerfile  https://github.com/mkell43/basedevcontainer.git
+    docker build -t mkell43/basedevcontainer -f Dockerfile  https://github.com/mkell43/basedevcontainer.git
     ```
 
-- You can extend the Docker image `qmcgaw/basedevcontainer` with your own instructions.
+- You can extend the Docker image `mkell43/basedevcontainer` with your own instructions.
 
-    1. Create a file `.devcontainer/Dockerfile` with `FROM qmcgaw/basedevcontainer`
+    1. Create a file `.devcontainer/Dockerfile` with `FROM mkell43/basedevcontainer`
     1. Append instructions to the Dockerfile created. For example:
         - Add more Go packages and add an alias
 
             ```Dockerfile
-            FROM qmcgaw/basedevcontainer
+            FROM mkell43/basedevcontainer
             COPY . .
             RUN echo "alias ls='ls -al'" >> ~/.zshrc
             ```
@@ -118,7 +117,7 @@ You can build and extend the Docker development image to suit your needs.
         - Add some Alpine packages, you will need to switch to `root`:
 
             ```Dockerfile
-            FROM qmcgaw/basedevcontainer
+            FROM mkell43/basedevcontainer
             USER root
             RUN apk add bind-tools
             USER vscode
