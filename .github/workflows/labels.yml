@@ -1,7 +1,8 @@
 name: labels
 on:
+  workflow_dispatch:
   push:
-    branches: ["master"]
+    branches: ["main"]
     paths:
       - '.github/labels.yml'
       - '.github/workflows/labels.yml'
