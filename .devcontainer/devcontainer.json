@@ -1,33 +1,43 @@
 {
-    "name": "project-dev",
-    "dockerComposeFile": ["docker-compose.yml"],
-    "service": "vscode",
-    "runServices": ["vscode"],
-    "shutdownAction": "stopCompose",
-    "postCreateCommand": "~/.windows.sh",
-    "workspaceFolder": "/workspace",
-    // "overrideCommand": "",
-    "extensions": [
-        "IBM.output-colorizer",
-        "eamodio.gitlens",
-        "mhutchie.git-graph",
-        "davidanson.vscode-markdownlint",
-        "shardulm94.trailing-spaces",
-        "alefragnani.Bookmarks",
-        "Gruntfuggly.todo-tree",
-        "mohsen1.prettify-json",
-        "quicktype.quicktype",
-        "spikespaz.vscode-smoothtype",
-        "stkb.rewrap",
-        "vscode-icons-team.vscode-icons",
-        "ms-azuretools.vscode-docker"
-    ],
-    "settings": {
-        // General settings
-        "files.eol": "\n",
-        // Docker
-        "remote.extensionKind": {
-            "ms-azuretools.vscode-docker": "workspace"
-        }
+  "name": "project-dev",
+  "dockerComposeFile": [
+    "docker-compose.yml"
+  ],
+  "service": "vscode",
+  "runServices": [
+    "vscode"
+  ],
+  "shutdownAction": "stopCompose",
+  "workspaceFolder": "/workspace",
+  // "overrideCommand": "",
+  "extensions": [
+    "aaron-bond.better-comments",
+    "ms-azuretools.vscode-docker",
+    "editorconfig.editorconfig",
+    "irongeek.vscode-env",
+    "bierner.github-markdown-preview",
+    "davidanson.vscode-markdownlint",
+    "foxundermoon.shell-format",
+    "timonwong.shellcheck",
+    "IBM.output-colorizer",
+    "redhat.vscode-yaml",
+    "shardulm94.trailing-spaces",
+    "eamodio.gitlens",
+    "Gruntfuggly.todo-tree"
+  ],
+  "features": {
+    "docker-from-docker": {
+      "version": "latest",
+      "dockerDashComposeVersion": "v3",
+      "username": "vscode"
     }
+  },
+  "settings": {
+    // General settings
+    "files.eol": "\n",
+    // Docker
+    "remote.extensionKind": {
+      "ms-azuretools.vscode-docker": "workspace"
+    }
+  }
 }

@@ -2,23 +2,14 @@ version: "3.7"
 
 services:
   vscode:
-    build: .
-    image: basedevcontainer
+    image: basedevcontainer:latest
     volumes:
       - ../:/workspace
-      # Docker
-      - ~/.docker:/root/.docker:z
-      # Docker socket to access Docker server
-      - /var/run/docker.sock:/var/run/docker.sock
-      # SSH directory for Linux, OSX and WSL
-      - ~/.ssh:/root/.ssh:z
-      # For Windows without WSL, a copy will be made
-      # from /tmp/.ssh to ~/.ssh to fix permissions
-      # - ~/.ssh:/tmp/.ssh:ro
+      - ~/.ssh:/home/developer/.ssh:z
       # Shell history persistence
-      - ~/.zsh_history:/root/.zsh_history:z
+      - ~/.zsh_history:/home/developer/.zsh_history:z
       # Git config
-      - ~/.gitconfig:/root/.gitconfig:z
+      - ~/.gitconfig:/home/developer/.gitconfig:z
     environment:
       - TZ=
     entrypoint: ["zsh", "-c", "while sleep 1000; do :; done"]
