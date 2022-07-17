@@ -13,3 +13,6 @@
 - [ ] Add `docker` to container image
 - [ ] Add `buildx` to container image
 - [ ] Update extensions in `.devcontainer/devcontainer.json` for working on this project specifically.
+- [ ] Release process
+- [ ] Testing
+- [ ] Push to docker registry
