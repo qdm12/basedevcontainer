@@ -12,7 +12,7 @@ Forked from [qdm12/basedevcontainer](https://github.com/qdm12/basedevcontainer)
 [![GitHub issues](https://img.shields.io/github/issues/mkell43/basedevcontainer.svg)](https://github.com/mkell43/basedevcontainer/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/mkell43/basedevcontainer.svg)](https://github.com/mkell43/basedevcontainer/issues?q=is%3Aissue+is%3Aclosed)
 
-[![MIT](https://img.shields.io/github/license/qdm12/basedevcontainer)](https://github.com/mkell43/basedevcontainer/main/LICENSE)
+[![MIT](https://img.shields.io/github/license/mkell43/basedevcontainer)](https://github.com/mkell43/basedevcontainer/main/LICENSE)
 
 ## Features
 
@@ -61,8 +61,8 @@ Forked from [qdm12/basedevcontainer](https://github.com/qdm12/basedevcontainer)
     # we assume you are in /yourpath/myproject
     mkdir .devcontainer
     cd .devcontainer
-    wget -q https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/devcontainer.json
-    wget -q https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/docker-compose.yml
+    wget -q https://raw.githubusercontent.com/mkell43/basedevcontainer/main/.devcontainer/devcontainer.json
+    wget -q https://raw.githubusercontent.com/mkell43/basedevcontainer/main/.devcontainer/docker-compose.yml
     ```
 
 1. If you have a *.vscode/settings.json*, eventually move the settings to *.devcontainer/devcontainer.json* in the `"settings"` section as *.vscode/settings.json* take precedence over the settings defined in *.devcontainer/devcontainer.json*.
@@ -100,7 +100,7 @@ You can build and extend the Docker development image to suit your needs.
 - You can build the development image yourself:
 
     ```sh
-    docker build -t qmcgaw/basedevcontainer -f alpine.Dockerfile  https://github.com/qdm12/basedevcontainer.git
+    docker build -t qmcgaw/basedevcontainer -f alpine.Dockerfile  https://github.com/mkell43/basedevcontainer.git
     ```
 
 - You can extend the Docker image `qmcgaw/basedevcontainer` with your own instructions.
