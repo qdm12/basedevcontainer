@@ -44,8 +44,13 @@ RUN apt-get update -y && \
 ENV TZ=
 
 # Setup Git and SSH
+# Workaround for older Debian in order to be able to sign commits
+RUN echo "deb https://deb.debian.org/debian bookworm main" >> /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends -t bookworm git git-man && \
+    rm -r /var/cache/* /var/lib/apt/lists/*
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends git git-man man openssh-client less && \
+    apt-get install -y --no-install-recommends man openssh-client less && \
     rm -r /var/cache/* /var/lib/apt/lists/*
 COPY .windows.sh /root/
 RUN chmod +x /root/.windows.sh
