@@ -58,7 +58,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
   - Manage your host Docker from within the dev container on Linux, MacOS and Windows
 - Docker uses buildkit by default, with the latest Docker client binary.
 - Extensible with docker-compose.yml
-- Supports SSH keys with Windows (Hyperv) bind mounts at /tmp/.ssh
+- Supports SSH keys with Linux, OSX and Windows
 
 ## Requirements
 

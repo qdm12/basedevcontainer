@@ -1,18 +1,30 @@
 #!/bin/sh
 
-# As Windows bind mounts do not allow the container to chmod files
-# and SSH requires your keys to have not too opened permissions,
-# we offer the user to bind mount their SSH directory in /tmp/.ssh
-# as read only which we then copy over to /root/.ssh with the right
-# permissions
-if [ -d "/tmp/.ssh" ]; then
-  if [ -d "~/.ssh" ]; then
-    echo "~/.ssh already exists, not overriding with files from /tmp/.ssh"
-    exit 0
-  fi
-  cp -rf /tmp/.ssh ~/
-  chmod 700 ~/.ssh
+if [ -d "~/.ssh" ]; then
+  # If the ~/.ssh directory exists, it's either
+  # already populated by some custom configuration,
+  # or it has been bind mounted with an older docker-compose.yml
+  # for Linux and OSX, so we should leave it as is.
+  cp -rf /tmp/.ssh ~/.ssh
   chmod 600 ~/.ssh/*
   chmod 644 ~/.ssh/*.pub &> /dev/null
-  echo "SSH files copied to ~/.ssh with correct permissions"
+  exit 0
 fi
+
+if [ -d /tmp/.ssh ]; then
+  # Retro-compatibility
+  echo "Copying content of /tmp/.ssh to ~/.ssh"
+  ln -s /mnt/ssh ~/.ssh
+  exit 0
+fi
+
+if [ "$(stat -c '%U' /mnt/ssh)" != "UNKNOWN" ]; then
+  echo "Unix host detected, symlinking /mnt/ssh to ~/.ssh"
+  ln -s /mnt/ssh ~/.ssh
+  exit 0
+fi
+
+echo "Windows host detected, copying content of /mnt/ssh to ~/.ssh"
+cp -rf /mnt/ssh ~/.ssh
+chmod 600 ~/.ssh/*
+chmod 644 ~/.ssh/*.pub &> /dev/null
