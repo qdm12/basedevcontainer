@@ -5,9 +5,7 @@ if [ -d "~/.ssh" ]; then
   # already populated by some custom configuration,
   # or it has been bind mounted with an older docker-compose.yml
   # for Linux and OSX, so we should leave it as is.
-  cp -rf /tmp/.ssh ~/.ssh
-  chmod 600 ~/.ssh/*
-  chmod 644 ~/.ssh/*.pub &> /dev/null
+  echo "~/.ssh directory already exists, exiting"
   exit 0
 fi
 
@@ -25,6 +23,6 @@ if [ "$(stat -c '%U' /mnt/ssh)" != "UNKNOWN" ]; then
 fi
 
 echo "Windows host detected, copying content of /mnt/ssh to ~/.ssh"
-cp -rf /mnt/ssh ~/.ssh
+cp -rf /mnt/ssh/* ~/.ssh/
 chmod 600 ~/.ssh/*
 chmod 644 ~/.ssh/*.pub &> /dev/null
