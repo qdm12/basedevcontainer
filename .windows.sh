@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -d "~/.ssh" ]; then
+if [ -d ~/.ssh ]; then
   # If the ~/.ssh directory exists, it's either
   # already populated by some custom configuration,
   # or it has been bind mounted with an older docker-compose.yml
