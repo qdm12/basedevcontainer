@@ -19,6 +19,11 @@ if [ -d /tmp/.ssh ]; then
   exit 0
 fi
 
+if [ ! -d /mnt/ssh ]; then
+  echo "No ssh directory found (~/.ssh, /tmp/.ssh, /mnt/ssh), exiting"
+  exit 0
+fi
+
 if [ "$(stat -c '%U' /mnt/ssh)" != "UNKNOWN" ]; then
   echo "Unix host detected, symlinking /mnt/ssh to ~/.ssh"
   ln -s /mnt/ssh ~/.ssh
