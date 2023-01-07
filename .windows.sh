@@ -12,7 +12,10 @@ fi
 if [ -d /tmp/.ssh ]; then
   # Retro-compatibility
   echo "Copying content of /tmp/.ssh to ~/.ssh"
-  ln -s /mnt/ssh ~/.ssh
+  mkdir ~/.ssh
+  cp -r /tmp/.ssh/* ~/.ssh/
+  chmod 600 ~/.ssh/*
+  chmod 644 ~/.ssh/*.pub &> /dev/null
   exit 0
 fi
 
