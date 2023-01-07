@@ -26,6 +26,7 @@ if [ "$(stat -c '%U' /mnt/ssh)" != "UNKNOWN" ]; then
 fi
 
 echo "Windows host detected, copying content of /mnt/ssh to ~/.ssh"
+mkdir ~/.ssh
 cp -rf /mnt/ssh/* ~/.ssh/
 chmod 600 ~/.ssh/*
 chmod 644 ~/.ssh/*.pub &> /dev/null
