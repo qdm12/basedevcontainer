@@ -8,7 +8,7 @@ plugins=(vscode git colorize docker docker-compose)
 
 # TODO Ascii art
 
-[ -f ~/.windows.sh ] && source ~/.windows.sh
+[ -f ~/.ssh.sh ] && source ~/.ssh.sh
 
 # SSH directory check
 [ -d ~/.ssh ] ||  >&2 echo "[WARNING] No SSH directory found, SSH functionalities might not work"

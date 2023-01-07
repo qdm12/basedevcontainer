@@ -52,8 +52,10 @@ RUN echo "deb https://deb.debian.org/debian bookworm main" >> /etc/apt/sources.l
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends man openssh-client less && \
     rm -r /var/cache/* /var/lib/apt/lists/*
-COPY .windows.sh /root/
-RUN chmod +x /root/.windows.sh
+COPY .ssh.sh /root/
+RUN chmod +x /root/.ssh.sh
+# Retro-compatibility symlink
+RUN  ln -s /root/.ssh.sh /root/.windows.sh
 
 # Setup shell
 ENTRYPOINT [ "/bin/zsh" ]

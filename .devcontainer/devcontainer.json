@@ -4,7 +4,7 @@
     "service": "vscode",
     "runServices": ["vscode"],
     "shutdownAction": "stopCompose",
-    "postCreateCommand": "~/.windows.sh",
+    "postCreateCommand": "~/.ssh.sh",
     "workspaceFolder": "/workspace",
     // "overrideCommand": "",
     "extensions": [

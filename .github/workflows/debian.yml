@@ -5,14 +5,14 @@ on:
       - .github/workflows/debian.yml
       - shell/**
       - .dockerignore
-      - .windows.sh
+      - .ssh.sh
       - debian.Dockerfile
   pull_request:
     paths:
       - .github/workflows/debian.yml
       - shell/**
       - .dockerignore
-      - .windows.sh
+      - .ssh.sh
       - debian.Dockerfile
 
 jobs:
