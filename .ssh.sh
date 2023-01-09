@@ -5,9 +5,9 @@ if [ -d ~/.ssh ]; then
     # ~/.ssh is a bind mount from the host
     return 0;
   fi
-  echo "$(/bin/ls -a /mnt/ssh)" > /tmp/ls_mnt_ssh
-  echo "$(/bin/ls -a ~/.ssh)" > /tmp/ls_ssh
-  echo "$(/bin/ls -a /tmp/.ssh)" > /tmp/ls_tmp_ssh
+  echo "$(/bin/ls -a /mnt/ssh 2>/dev/null)" > /tmp/ls_mnt_ssh
+  echo "$(/bin/ls -a ~/.ssh 2>/dev/null)" > /tmp/ls_ssh
+  echo "$(/bin/ls -a /tmp/.ssh 2>/dev/null)" > /tmp/ls_tmp_ssh
   if [ -d /mnt/ssh ] && [ -z "$(comm -3 /tmp/ls_mnt_ssh /tmp/ls_ssh)" ]; then
     # /mnt/ssh and ~/.ssh are the same in terms of file names.
     rm /tmp/ls_mnt_ssh
