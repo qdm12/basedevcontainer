@@ -5,14 +5,26 @@ if [ -d ~/.ssh ]; then
     # ~/.ssh is a bind mount from the host
     return 0;
   fi
-  if [ -d /mnt/ssh ] && [ -z "$(comm -3 <(/bin/ls -a /mnt/ssh) <(/bin/ls -a ~/.ssh))" ]; then
+  echo "$(/bin/ls -a /mnt/ssh)" > /tmp/ls_mnt_ssh
+  echo "$(/bin/ls -a ~/.ssh)" > /tmp/ls_ssh
+  echo "$(/bin/ls -a /tmp/.ssh)" > /tmp/ls_tmp_ssh
+  if [ -d /mnt/ssh ] && [ -z "$(comm -3 /tmp/ls_mnt_ssh /tmp/ls_ssh)" ]; then
     # /mnt/ssh and ~/.ssh are the same in terms of file names.
+    rm /tmp/ls_mnt_ssh
+    rm /tmp/ls_ssh
+    rm /tmp/ls_tmp_ssh
     return 0;
   fi
-  if [ -d /tmp/.ssh ] && [ -z "$(comm -3 <(/bin/ls -a /tmp/.ssh) <(/bin/ls -a ~/.ssh))" ]; then
+  if [ -d /tmp/.ssh ] && [ -z "$(comm -3 /tmp/ls_tmp_ssh /tmp/ls_ssh)" ]; then
     # Retro-compatibility: /tmp/.ssh and ~/.ssh are the same in terms of file names.
+    rm /tmp/ls_mnt_ssh
+    rm /tmp/ls_ssh
+    rm /tmp/ls_tmp_ssh
     return 0;
   fi
+  rm /tmp/ls_mnt_ssh
+  rm /tmp/ls_ssh
+  rm /tmp/ls_tmp_ssh
 fi
 
 if [ -d /tmp/.ssh ]; then
