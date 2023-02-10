@@ -32,7 +32,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 
 ## Features
 
-- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.16 in **209MB**
+- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.17 in **209MB**
 - `qmcgaw/basedevcontainer:debian` based on Debian Buster Slim in **376MB**
 - All images are compatible with `amd64`, `386`, `arm64`, `armv7`, `armv6` and `ppc64le` CPU architectures
 - Contains the packages:
