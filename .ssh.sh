@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ -d ~/.ssh ]; then
-  if echo "$(mountpoint ~/.ssh)" | grep -q "is a mountpoint"; then
+  if echo "$(mountpoint ~/.ssh 2>&1)" | grep -q "is a mountpoint"; then
     # ~/.ssh is a bind mount from the host
     return 0;
   fi
