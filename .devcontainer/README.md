@@ -13,13 +13,12 @@ It works on Linux, Windows (WSL2) and OSX.
 
 ## Setup
 
-1. Create the following files on your host if you don't have them:
+1. Create the following files and directory on your host if you don't have them:
 
     ```sh
     touch ~/.gitconfig ~/.zsh_history
+    mkdir -p ~/.ssh
     ```
-
-    Note that the development container will create the empty directory `~/.ssh` if you don't have it on your host.
 
 1. **For Docker on OSX**: ensure the project directory and your home directory `~` are accessible by Docker.
 1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P).
@@ -42,16 +41,18 @@ Customizations available are notably:
     ```
 
 - Changes to VSCode **settings** and **extensions** in [devcontainer.json](devcontainer.json).
-- Change the entrypoint script by adding in [docker-compose.yml](docker-compose.yml) a bind mount to a shell script to `/root/.welcome.sh` to replace the [current welcome script](https://github.com/qdm12/basedevcontainer/blob/master/shell/.welcome.sh). For example:
+- Change the entrypoint script by adding a bind mount in [devcontainer.json](devcontainer.json) of a shell script to `/root/.welcome.sh` to replace the [current welcome script](https://github.com/qdm12/basedevcontainer/blob/master/shell/.welcome.sh). For example:
 
-    ```yml
-    volumes:
-      # ...
-      - ./.welcome.sh:/root/.welcome.sh:ro
-      # ...
+    ```json
+    // Welcome script
+    {
+        "source": "./.welcome.sh",
+        "target": "/root/.welcome.sh",
+        "type": "bind"
+    },
     ```
 
-- Change the `vscode` service container configuration in [docker-compose.yml](docker-compose.yml)
+- Change the `vscode` service container configuration either in [docker-compose.yml](docker-compose.yml) or in [devcontainer.json](devcontainer.json).
 - Add other services in [docker-compose.yml](docker-compose.yml) to run together with the development VSCode service container. For example to add a test database:
 
     ```yml
