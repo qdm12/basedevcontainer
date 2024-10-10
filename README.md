@@ -106,8 +106,8 @@ Base Alpine development container for Visual Studio Code, used as base image by 
               POSTGRES_PASSWORD: password
         ```
 
-    1. In `.devcontainer/devcontainer.json` change the line `"runServices": ["vscode"],` to `"runServices": ["vscode", "database"],`
-    1. In the VS code command palette, rebuild the container
+    1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P)
+    1. Select `Dev-Containers: Rebuild Container`
 
 ### Development image
 
@@ -141,7 +141,8 @@ You can build and extend the Docker development image to suit your needs.
             ```
 
     1. Modify `.devcontainer/docker-compose.yml` and add `build: .` in the vscode service.
-    1. Open the VS code command palette and choose `Remote-Containers: Rebuild container`
+    1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P)
+    1. Select `Dev-Containers: Rebuild Container`
 
 - You can bind mount a file at `/home/vscode/.welcome.sh` to modify the welcome message (use `/root/.welcome.sh` for `root`)
 
