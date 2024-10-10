@@ -63,10 +63,10 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 ## Requirements
 
 - [Docker](https://www.docker.com/products/docker-desktop) installed and running
-  - If you don't use Linux, share the directories `~/.ssh` and the directory of your project with Docker Desktop
+  - If you use OSX, share the directory `~/.ssh` and the directory of your project with Docker Desktop
 - [Docker Compose](https://docs.docker.com/compose/install/) installed
 - [VS code](https://code.visualstudio.com/download) installed
-- [VS code remote containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed
+- [VS code dev containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed
 
 ## Setup for a project
 
@@ -82,7 +82,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
     ```
 
 1. If you have a *.vscode/settings.json*, eventually move the settings to *.devcontainer/devcontainer.json* in the `"settings"` section as *.vscode/settings.json* take precedence over the settings defined in *.devcontainer/devcontainer.json*.
-1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P) and select `Remote-Containers: Open Folder in Container...` and choose your project directory
+1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P) and select `Dev Containers: Open Folder in Container...` and choose your project directory
 
 ## More
 
@@ -94,7 +94,6 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 
 ### docker-compose.yml
 
-- You can publish a port to access it from your host
 - Add containers to be launched with your development container. In example, let's add a postgres database.
     1. Add this block to `.devcontainer/docker-compose.yml`
 
