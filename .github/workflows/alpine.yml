@@ -1,6 +1,11 @@
 name: Alpine
 on:
+  release:
+    types:
+      - published
   push:
+    branches:
+      - master
     paths:
       - .github/workflows/alpine.yml
       - shell/**
@@ -27,11 +32,36 @@ jobs:
         run: docker build -f alpine.Dockerfile -t qmcgaw/basedevcontainer .
 
   publish:
+    if: |
+      github.repository == 'qdm12/basedevcontainer' &&
+      (
+        github.event_name == 'push' ||
+        github.event_name == 'release' ||
+        (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]')
+      )
     needs: [verify]
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            qmcgaw/basedevcontainer
+          tags: |
+            type=ref,event=pr
+            type=semver,pattern=v{{major}}.{{minor}}.{{patch}}-alpine
+            type=semver,pattern=v{{major}}.{{minor}}-alpine
+            type=raw,value=alpine,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+
+      - name: Short commit
+        id: shortcommit
+        run: echo "value=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
@@ -41,39 +71,15 @@ jobs:
           username: qmcgaw
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Set variables
-        id: vars
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-        run: |
-          BRANCH=${GITHUB_REF#refs/heads/}
-          TAG=${GITHUB_REF#refs/tags/}
-          echo ::set-output name=commit::$(git rev-parse --short HEAD)
-          echo ::set-output name=created::$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          if [ "$TAG" != "$GITHUB_REF" ]; then
-            echo ::set-output name=version::$TAG
-            echo ::set-output name=alpine_version::$TAG-alpine
-            echo ::set-output name=platforms::linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/s390x,linux/ppc64le
-          elif [ "$BRANCH" = "master" ]; then
-            echo ::set-output name=version::latest
-            echo ::set-output name=alpine_version::alpine
-            echo ::set-output name=platforms::linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/s390x,linux/ppc64le
-          else
-            echo ::set-output name=version::$BRANCH
-            echo ::set-output name=alpine_version::$BRANCH-alpine
-            echo ::set-output name=platforms::linux/amd64
-          fi
-
       - name: Build and push final image
         uses: docker/build-push-action@v5
         with:
           file: alpine.Dockerfile
-          platforms: ${{ steps.vars.outputs.platforms }}
+          platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/s390x,linux/ppc64le
+          labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            CREATED=${{ steps.vars.outputs.created }}
-            COMMIT=${{ steps.vars.outputs.commit }}
-            VERSION=${{ steps.vars.outputs.version }}
-          tags: |
-            qmcgaw/basedevcontainer:${{ steps.vars.outputs.version }}
-            qmcgaw/basedevcontainer:${{ steps.vars.outputs.alpine_version }}
+            CREATED=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            COMMIT=${{ steps.shortcommit.outputs.value }}
+            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+          tags: ${{ steps.meta.outputs.tags }}
           push: true
