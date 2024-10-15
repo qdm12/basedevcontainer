@@ -41,13 +41,13 @@ Customizations available are notably:
     ```
 
 - Changes to VSCode **settings** and **extensions** in [devcontainer.json](devcontainer.json).
-- Change the entrypoint script by adding a bind mount in [devcontainer.json](devcontainer.json) of a shell script to `/root/.welcome.sh` to replace the [current welcome script](https://github.com/qdm12/basedevcontainer/blob/master/shell/.welcome.sh). For example:
+- Change the entrypoint script by adding a bind mount in [devcontainer.json](devcontainer.json) of a shell script to `/home/user/.welcome.sh` to replace the [current welcome script](https://github.com/qdm12/basedevcontainer/blob/master/shell/.welcome.sh). For example:
 
     ```json
     // Welcome script
     {
         "source": "./.welcome.sh",
-        "target": "/root/.welcome.sh",
+        "target": "/home/user/.welcome.sh",
         "type": "bind"
     },
     ```

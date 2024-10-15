@@ -21,13 +21,13 @@
         // Zsh commands history persistence
         {
             "source": "${localEnv:HOME}/.zsh_history",
-            "target": "/root/.zsh_history",
+            "target": "/home/user/.zsh_history",
             "type": "bind"
         },
         // Git configuration file
         {
             "source": "${localEnv:HOME}/.gitconfig",
-            "target": "/root/.gitconfig",
+            "target": "/home/user/.gitconfig",
             "type": "bind"
         },
         // SSH directory for Linux, OSX and WSL
