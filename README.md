@@ -130,20 +130,18 @@ You can build and extend the Docker development image to suit your needs.
             RUN echo "alias ls='ls -al'" >> ~/.zshrc
             ```
 
-        - Add some Alpine packages, you will need to switch to `root`:
+        - Add some Alpine packages:
 
             ```Dockerfile
             FROM qmcgaw/basedevcontainer
-            USER root
             RUN apk add bind-tools
-            USER vscode
             ```
 
     1. Modify `.devcontainer/docker-compose.yml` and add `build: .` in the vscode service.
     1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P)
     1. Select `Dev-Containers: Rebuild Container`
 
-- You can bind mount a file at `/home/vscode/.welcome.sh` to modify the welcome message (use `/root/.welcome.sh` for `root`)
+- You can bind mount a file at `/root/.welcome.sh` to modify the welcome message.
 
 ## TODO
 
