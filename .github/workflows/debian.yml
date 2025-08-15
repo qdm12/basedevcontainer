@@ -41,6 +41,10 @@ jobs:
       )
     needs: [verify]
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v5
 
@@ -52,6 +56,7 @@ jobs:
         with:
           images: |
             qmcgaw/basedevcontainer
+            gchr.io/qdm12/basedevcontainer
           tags: |
             type=ref,event=pr
             type=semver,pattern=v{{major}}.{{minor}}.{{patch}}-debian
@@ -69,6 +74,12 @@ jobs:
         with:
           username: qmcgaw
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: qdm12
+          password: ${{ github.token }}
 
       - name: Build and push final image
         uses: docker/build-push-action@v6
