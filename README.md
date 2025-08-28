@@ -38,6 +38,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 - Contains the packages:
   - `libstdc++`: needed by the VS code server
   - `zsh`: main shell instead of `/bin/sh`
+  - `sudo`: run commands as root if needed
   - `git`: interact with Git repositories
   - `openssh-client`: use SSH keys
   - `nano`: edit files from the terminal
@@ -59,6 +60,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 - Docker uses buildkit by default, with the latest Docker client binary.
 - Extensible with docker-compose.yml
 - Supports SSH keys with Linux, OSX and Windows
+- Runs without root as `user` (uid 1000 and gid 1000) user but you can run Docker without sudo and can use sudo if needed
 
 ## Requirements
 
@@ -130,18 +132,20 @@ You can build and extend the Docker development image to suit your needs.
             RUN echo "alias ls='ls -al'" >> ~/.zshrc
             ```
 
-        - Add some Alpine packages:
+        - Add some Alpine packages, you will need to switch to `root`:
 
             ```Dockerfile
             FROM qmcgaw/basedevcontainer
+            USER root
             RUN apk add bind-tools
+            USER user
             ```
 
     1. Modify `.devcontainer/docker-compose.yml` and add `build: .` in the vscode service.
     1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P)
     1. Select `Dev-Containers: Rebuild Container`
 
-- You can bind mount a file at `/root/.welcome.sh` to modify the welcome message.
+- You can bind mount a file at `/home/user/.welcome.sh` to modify the welcome message (use `/root/.welcome.sh` for `root`)
 
 ## TODO
 
