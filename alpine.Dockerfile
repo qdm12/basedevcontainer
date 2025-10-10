@@ -39,8 +39,8 @@ RUN apk add -q --update --progress --no-cache ca-certificates
 RUN apk add -q --update --progress --no-cache tzdata
 ENV TZ=
 
-# Setup Git and SSH
-RUN apk add -q --update --progress --no-cache git mandoc git-doc openssh-client
+# Setup Git and SSH and GPG
+RUN apk add -q --update --progress --no-cache git mandoc git-doc openssh-client gnupg
 COPY .ssh.sh /root/
 RUN chmod +x /root/.ssh.sh
 # Retro-compatibility symlink
