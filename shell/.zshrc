@@ -5,6 +5,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 ENABLE_CORRECTION="false"
 COMPLETION_WAITING_DOTS="true"
 plugins=(vscode git colorize docker docker-compose)
+unsetopt HIST_SAVE_BY_COPY # Tell zsh to write directly to the file
 
 # TODO Ascii art
 
