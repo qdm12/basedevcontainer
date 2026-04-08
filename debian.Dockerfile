@@ -1,4 +1,4 @@
-ARG DEBIAN_VERSION=12-slim
+ARG DEBIAN_VERSION=13-slim
 
 ARG DOCKER_VERSION=v29.4.0
 ARG COMPOSE_VERSION=v5.1.1
@@ -44,13 +44,8 @@ RUN apt-get update -y && \
 ENV TZ=
 
 # Setup Git and SSH and GPG
-# Workaround for older Debian in order to be able to sign commits
-RUN echo "deb https://deb.debian.org/debian bookworm main" >> /etc/apt/sources.list && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends -t bookworm git git-man && \
-    rm -r /var/cache/* /var/lib/apt/lists/*
 RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends man openssh-client less gpg && \
+    apt-get install -y --no-install-recommends git git-man man openssh-client less gpg && \
     rm -r /var/cache/* /var/lib/apt/lists/*
 COPY .ssh.sh /root/
 RUN chmod +x /root/.ssh.sh
