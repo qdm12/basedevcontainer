@@ -7,8 +7,6 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 [![Alpine](https://github.com/qdm12/basedevcontainer/actions/workflows/alpine.yml/badge.svg)](https://github.com/qdm12/basedevcontainer/actions/workflows/alpine.yml)
 [![Debian](https://github.com/qdm12/basedevcontainer/actions/workflows/debian.yml/badge.svg)](https://github.com/qdm12/basedevcontainer/actions/workflows/debian.yml)
 
-[![dockeri.co](https://dockeri.co/image/qmcgaw/basedevcontainer)](https://hub.docker.com/r/qmcgaw/basedevcontainer)
-
 ![Last release](https://img.shields.io/github/release/qdm12/basedevcontainer?label=Last%20release)
 ![Last Docker tag](https://img.shields.io/docker/v/qmcgaw/basedevcontainer?sort=semver&label=Last%20Docker%20tag)
 [![Last release size](https://img.shields.io/docker/image-size/qmcgaw/basedevcontainer?sort=semver&label=Last%20released%20image)](https://hub.docker.com/r/qmcgaw/basedevcontainer/tags?page=1&ordering=last_updated)
@@ -22,10 +20,6 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 [![GitHub closed PRs](https://img.shields.io/github/issues-pr-closed/qdm12/basedevcontainer.svg)](https://github.com/qdm12/basedevcontainer/pulls?q=is%3Apr+is%3Aclosed)
 [![GitHub issues](https://img.shields.io/github/issues/qdm12/basedevcontainer.svg)](https://github.com/qdm12/basedevcontainer/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/qdm12/basedevcontainer.svg)](https://github.com/qdm12/basedevcontainer/issues?q=is%3Aissue+is%3Aclosed)
-
-[![Lines of code](https://img.shields.io/tokei/lines/github/qdm12/basedevcontainer)](https://github.com/qdm12/basedevcontainer)
-![Code size](https://img.shields.io/github/languages/code-size/qdm12/basedevcontainer)
-![GitHub repo size](https://img.shields.io/github/repo-size/qdm12/basedevcontainer)
 
 [![MIT](https://img.shields.io/github/license/qdm12/basedevcontainer)](https://github.com/qdm12/basedevcontainer/master/LICENSE)
 ![Visitors count](https://visitor-badge.laobi.icu/badge?page_id=basedevcontainer.readme)
