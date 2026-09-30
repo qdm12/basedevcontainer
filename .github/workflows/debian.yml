@@ -57,6 +57,8 @@ jobs:
           images: |
             qmcgaw/basedevcontainer
             ghcr.io/qdm12/basedevcontainer
+          flavor: |
+            latest=false
           tags: |
             type=ref,event=pr
             type=semver,pattern=v{{major}}.{{minor}}.{{patch}}-debian
