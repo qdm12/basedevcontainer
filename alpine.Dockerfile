@@ -74,9 +74,14 @@ ENV DOCKER_BUILDKIT=1
 COPY --from=compose /bin /usr/libexec/docker/cli-plugins/docker-compose
 ENV COMPOSE_DOCKER_CLI_BUILD=1
 RUN echo "alias docker-compose='docker compose'" >> /root/.zshrc
+RUN ln -sf /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
 
 # Buildx plugin
 COPY --from=buildx /bin /usr/libexec/docker/cli-plugins/docker-buildx
+
+# Podman
+RUN apk add --no-cache podman-remote \
+    && ln -sf /usr/bin/podman-remote /usr/local/bin/podman
 
 # Logo ls
 COPY --from=logo-ls /bin /usr/local/bin/logo-ls
