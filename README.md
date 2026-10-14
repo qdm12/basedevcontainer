@@ -58,7 +58,6 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 
 - [Docker](https://www.docker.com/products/docker-desktop) installed and running
   - If you use OSX, share the directory `~/.ssh` and the directory of your project with Docker Desktop
-- [Docker Compose](https://docs.docker.com/compose/install/) installed
 - [VS code](https://code.visualstudio.com/download) installed
 - [VS code dev containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed
 
@@ -70,9 +69,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
     ```sh
     # we assume you are in /yourpath/myproject
     mkdir .devcontainer
-    cd .devcontainer
-    wget -q https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/devcontainer.json
-    wget -q https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/docker-compose.yml
+    wget -qO .devcontainer/devcontainer.json https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/devcontainer.json
     ```
 
 1. If you have a *.vscode/settings.json*, eventually move the settings to *.devcontainer/devcontainer.json* in the `"settings"` section as *.vscode/settings.json* take precedence over the settings defined in *.devcontainer/devcontainer.json*.
@@ -88,19 +85,28 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 
 ### docker-compose.yml
 
-- Add containers to be launched with your development container. In example, let's add a postgres database.
-    1. Add this block to `.devcontainer/docker-compose.yml`
+You can create a `.devcontainer/docker-compose.yml` to create the devcontainer and other containers at the same time:
 
-        ```yml
-          database:
-            image: postgres
-            restart: always
-            environment:
-              POSTGRES_PASSWORD: password
-        ```
+```yml
+services:
+  vscode: # configured in devcontainer.json
+    build: .
+  postgres: # example of a database container
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+```
 
-    1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P)
-    1. Select `Dev-Containers: Rebuild Container`
+And change the following in `.devcontainer/devcontainer.json`:
+
+- remove `"build": { "dockerfile": "./Dockerfile" },`
+- add `"dockerComposeFile": "docker-compose.yml",`
+- add `"overrideCommand": true,`
+- add `"service": "vscode",`
+- add `"runServices": ["vscode", "postgres"],`
+
+Finally, open the command palette in Visual Studio Code (CTRL+SHIFT+P) and select `Dev-Containers: Rebuild Container`
 
 ### Development image
 
@@ -116,20 +122,11 @@ You can build and extend the Docker development image to suit your needs.
 
     1. Modify the `.devcontainer/Dockerfile` by appending instructions. For example to add Alpine packages:
 
-            ```Dockerfile
-            FROM qmcgaw/basedevcontainer
-            COPY . .
-            RUN echo "alias ls='ls -al'" >> ~/.zshrc
-            ```
+        ```Dockerfile
+        FROM qmcgaw/basedevcontainer
+        RUN apk add bind-tools
+        ```
 
-        - Add some Alpine packages:
-
-            ```Dockerfile
-            FROM qmcgaw/basedevcontainer
-            RUN apk add bind-tools
-            ```
-
-    1. Modify `.devcontainer/docker-compose.yml` and add `build: .` in the vscode service.
     1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P)
     1. Select `Dev-Containers: Rebuild Container`
 

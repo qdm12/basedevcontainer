@@ -9,7 +9,6 @@ It works on Linux, Windows (WSL2) and OSX.
 - [VS code](https://code.visualstudio.com/download) installed
 - [VS code dev containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed
 - [Docker](https://www.docker.com/products/docker-desktop) installed and running
-- [Docker Compose](https://docs.docker.com/compose/install/) installed
 
 ## Setup
 
@@ -49,6 +48,6 @@ Customizations available are notably:
     },
     ```
 
-- Change the `vscode` service container configuration either in [docker-compose.yml](docker-compose.yml) or in [devcontainer.json](devcontainer.json).
-- Add other services in [docker-compose.yml](docker-compose.yml), see [this README section](https://github.com/qdm12/basedevcontainer/blob/master/README.md#docker-composeyml)
+- Change the container configuration in [devcontainer.json](devcontainer.json)
+- Add other services in a `docker-compose.yml`, see [this README section](https://github.com/qdm12/basedevcontainer/blob/master/README.md#docker-composeyml)
 - More customizations available are documented in the [devcontainer.json reference](https://containers.dev/implementors/json_reference/).
