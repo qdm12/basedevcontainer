@@ -48,7 +48,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
   - With [Logo LS](https://github.com/Yash-Handa/logo-ls) as a replacement for `ls`
     - Shows information on login; easily extensible
 - Cross platform
-  - Easily bind mount your SSH keys to use with **git**
+  - Use the host SSH agent or bind mount your SSH keys
   - Manage your host Docker from within the dev container on Linux, MacOS and Windows
 - Docker uses buildkit by default, with the latest Docker client binary.
 - Extensible with docker-compose.yml
@@ -131,6 +131,10 @@ You can build and extend the Docker development image to suit your needs.
     1. Select `Dev-Containers: Rebuild Container`
 
 - You can bind mount a file at `/root/.welcome.sh` to modify the welcome message.
+
+### SSH keys
+
+You can either use an SSH agent (preferred, more secure) or bind mount your `~/.ssh` directory at `/mnt/ssh`, or not use SSH at all. See the [.devcontainer/README.md#SSH-keys](.devcontainer/README.md) for more information.
 
 ## TODO
 

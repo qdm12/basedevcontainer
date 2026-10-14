@@ -1,5 +1,35 @@
 #!/bin/sh
 
+copy_missing_ssh_entries() {
+  source_dir="$1"
+
+  find "$source_dir" -mindepth 1 | while IFS= read -r source_path; do
+    relative_path=${source_path#"$source_dir"/}
+    destination_path="$HOME/.ssh/$relative_path"
+
+    if [ -d "$source_path" ]; then
+      mkdir -p "$destination_path"
+      continue
+    fi
+
+    if [ -e "$destination_path" ]; then
+      continue
+    fi
+
+    mkdir -p "$(dirname "$destination_path")"
+    cp -p "$source_path" "$destination_path"
+
+    case "$destination_path" in
+      *.pub)
+        chmod 644 "$destination_path" 2>/dev/null
+        ;;
+      *)
+        chmod 600 "$destination_path"
+        ;;
+    esac
+  done
+}
+
 if [ -d ~/.ssh ]; then
   if echo "$(mountpoint ~/.ssh 2>&1)" | grep -q "is a mountpoint"; then
     # ~/.ssh is a bind mount from the host
@@ -31,9 +61,7 @@ if [ -d /tmp/.ssh ]; then
   # Retro-compatibility
   echo "Copying content of /tmp/.ssh to ~/.ssh"
   mkdir -p ~/.ssh
-  cp -r /tmp/.ssh/* ~/.ssh/
-  chmod 600 ~/.ssh/*
-  chmod 644 ~/.ssh/*.pub &> /dev/null
+  copy_missing_ssh_entries /tmp/.ssh
   return 0
 fi
 
@@ -51,6 +79,4 @@ fi
 
 echo "Windows host detected, copying content of /mnt/ssh to ~/.ssh"
 mkdir -p ~/.ssh
-cp -rf /mnt/ssh/* ~/.ssh/
-chmod 600 ~/.ssh/*
-chmod 644 ~/.ssh/*.pub &> /dev/null
+copy_missing_ssh_entries /mnt/ssh
