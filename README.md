@@ -37,7 +37,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
   - `nano`: edit files from the terminal
 - Contains the binaries:
   - [`gh`](https://github.com/cli/cli): interact with Github with the terminal
-  - `docker`
+  - `docker`, `podman-remote` (aliased as `podman`)
   - `docker-compose` and `docker compose` docker plugin
   - [`docker buildx`](https://github.com/docker/buildx) docker plugin
   - [`bit`](https://github.com/chriswalz/bit)
@@ -51,12 +51,13 @@ Base Alpine development container for Visual Studio Code, used as base image by 
   - Use the host SSH agent or bind mount your SSH keys
   - Manage your host Docker from within the dev container on Linux, MacOS and Windows
 - Docker uses buildkit by default, with the latest Docker client binary.
+- Compatible with both the Docker and Podman engines
 - Extensible with docker-compose.yml
 - Supports SSH keys with Linux, OSX and Windows
 
 ## Requirements
 
-- [Docker](https://www.docker.com/products/docker-desktop) installed and running
+- [Docker](https://www.docker.com/products/docker-desktop) or [Podman](https://podman.io/getting-started/installation) installed and running
   - If you use OSX, share the directory `~/.ssh` and the directory of your project with Docker Desktop
 - [VS code](https://code.visualstudio.com/download) installed
 - [VS code dev containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed
@@ -68,11 +69,15 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 
     ```sh
     # we assume you are in /yourpath/myproject
-    mkdir .devcontainer
-    wget -qO .devcontainer/devcontainer.json https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/devcontainer.json
+    mkdir -p .devcontainer/docker .devcontainer/podman
+    wget -qO .devcontainer/README.md https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/README.md
+    wget -qO .devcontainer/.dockerignore https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/.dockerignore
+    wget -qO .devcontainer/Dockerfile https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/Dockerfile
+    wget -qO .devcontainer/docker/devcontainer.json https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/docker/devcontainer.json
+    wget -qO .devcontainer/podman/devcontainer.json https://raw.githubusercontent.com/qdm12/basedevcontainer/master/.devcontainer/podman/devcontainer.json
     ```
 
-1. If you have a *.vscode/settings.json*, eventually move the settings to *.devcontainer/devcontainer.json* in the `"settings"` section as *.vscode/settings.json* take precedence over the settings defined in *.devcontainer/devcontainer.json*.
+1. If you have a *.vscode/settings.json*, eventually move the settings to *`.devcontainer/*/devcontainer.json`* in the `"settings"` section as *.vscode/settings.json* take precedence over the settings defined in *.devcontainer/devcontainer.json*.
 1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P) and select `Dev Containers: Open Folder in Container...` and choose your project directory
 
 ## More
@@ -98,10 +103,10 @@ services:
       POSTGRES_PASSWORD: password
 ```
 
-And change the following in `.devcontainer/devcontainer.json`:
+And change the following in your relevant `devcontainer.json`:
 
-- remove `"build": { "dockerfile": "./Dockerfile" },`
-- add `"dockerComposeFile": "docker-compose.yml",`
+- remove `"build": { "dockerfile": "../Dockerfile" },`
+- add `"dockerComposeFile": "../docker-compose.yml",`
 - add `"overrideCommand": true,`
 - add `"service": "vscode",`
 - add `"runServices": ["vscode", "postgres"],`

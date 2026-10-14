@@ -7,7 +7,7 @@
         "SSH_AUTH_SOCK": "/tmp/ssh-agent.sock" // Comment out if not using the SSH agent
     },
     "build": {
-        "dockerfile": "./Dockerfile"
+        "dockerfile": "../Dockerfile"
     },
     "runArgs": [
         "--add-host=host.docker.internal:host-gateway"
@@ -87,7 +87,11 @@
             "target": "/AGENTS.md",
             "type": "bind"
         },
-        // Docker socket to access the host Docker server
+        // Engine: the host's Docker daemon, reached through its own Unix socket and
+        // mounted at the same path, so docker, docker compose and any Docker SDK work
+        // with no DOCKER_HOST. /var/run/docker.sock is where a Linux dockerd listens by
+        // default, and Docker Desktop with WSL integration exposes the same path inside
+        // the distro.
         {
             "source": "/var/run/docker.sock",
             "target": "/var/run/docker.sock",
