@@ -26,8 +26,8 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 
 ## Features
 
-- `qmcgaw/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.24 in **250MB**
-- `qmcgaw/basedevcontainer:debian` based on Debian Trixie Slim in **438MB**
+- `ghcr.io/qdm12/basedevcontainer:alpine` (or `:latest`) based on Alpine 3.24 in **250MB**
+- `ghcr.io/qdm12/basedevcontainer:debian` based on Debian Trixie Slim in **438MB**
 - All images are compatible with `amd64`, `386`, `arm64`, `armv7`, `armv6` and `ppc64le` CPU architectures
 - Contains the packages:
   - `libstdc++`: needed by the VS code server
@@ -115,15 +115,15 @@ You can build and extend the Docker development image to suit your needs.
 - You can build the development image yourself:
 
     ```sh
-    docker build -t qmcgaw/basedevcontainer -f alpine.Dockerfile  https://github.com/qdm12/basedevcontainer.git
+    docker build -t ghcr.io/qdm12/basedevcontainer -f alpine.Dockerfile  https://github.com/qdm12/basedevcontainer.git
     ```
 
-- You can extend the Docker image `qmcgaw/basedevcontainer` with your own instructions.
+- You can extend the Docker image `ghcr.io/qdm12/basedevcontainer` with your own instructions.
 
     1. Modify the `.devcontainer/Dockerfile` by appending instructions. For example to add Alpine packages:
 
         ```Dockerfile
-        FROM qmcgaw/basedevcontainer
+        FROM ghcr.io/qdm12/basedevcontainer
         RUN apk add bind-tools
         ```
 
