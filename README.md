@@ -114,9 +114,7 @@ You can build and extend the Docker development image to suit your needs.
 
 - You can extend the Docker image `qmcgaw/basedevcontainer` with your own instructions.
 
-    1. Create a file `.devcontainer/Dockerfile` with `FROM qmcgaw/basedevcontainer`
-    1. Append instructions to the Dockerfile created. For example:
-        - Add more Go packages and add an alias
+    1. Modify the `.devcontainer/Dockerfile` by appending instructions. For example to add Alpine packages:
 
             ```Dockerfile
             FROM qmcgaw/basedevcontainer
