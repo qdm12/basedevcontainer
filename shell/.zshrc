@@ -53,4 +53,4 @@ fi
 source $ZSH/oh-my-zsh.sh
 source ~/.p10k.zsh
 
-[ -f ~/.zshrc-specific.sh ] && source ~/.zshrc-specific
+[ -f ~/.zshrc-specific ] && source ~/.zshrc-specific
