@@ -1,5 +1,12 @@
-ZSH=/root/.oh-my-zsh
+ZSH=$HOME/.oh-my-zsh
 ZSH_CUSTOM=$ZSH/custom
+# Caches must live in each account's own home: root's shell setup is symlinked from this one,
+# and would otherwise rewrite the unprivileged account's cache files.
+ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
+# The image makes every directory group-writable so the package manager works without root, which
+# makes zsh's compaudit consider them insecure and drop them from fpath when running as root.
+# The layout is deliberate, so skip that check.
+ZSH_DISABLE_COMPFIX=true
 POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 ZSH_THEME="powerlevel10k/powerlevel10k"
 ENABLE_CORRECTION="false"
@@ -22,6 +29,8 @@ test -S /var/run/docker.sock
 [ "$?" = 0 ] && DOCKERSOCK_OK=yes
 [ -z $DOCKERSOCK_OK ] && >&2 echo "[WARNING] Docker socket not found, docker will not be available"
 
+# Running as root: the shell setup is symlinked from the unprivileged account's home
+[ "$(id -u)" = 0 ] && echo "Running as root"
 echo
 echo "Base version: $BASE_VERSION"
 where code &> /dev/null && echo "VS code server `code -v | head -n 1`"

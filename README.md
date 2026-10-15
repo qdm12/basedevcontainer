@@ -47,6 +47,8 @@ Base Alpine development container for Visual Studio Code, used as base image by 
   - Uses the [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
   - With [Logo LS](https://github.com/Yash-Handa/logo-ls) as a replacement for `ls`
     - Shows information on login; easily extensible
+- Runs as an unprivileged user (`user`, uid/gid `1000` by default, configurable), see [Non-root user](#non-root-user)
+  - `apk` (Alpine) and `apt-get` (Debian) install packages from that user, no sudo involved
 - Cross platform
   - Use the host SSH agent or bind mount your SSH keys
   - Manage your host Docker from within the dev container on Linux, MacOS and Windows
@@ -79,6 +81,46 @@ Base Alpine development container for Visual Studio Code, used as base image by 
 
 1. If you have a *.vscode/settings.json*, eventually move the settings to *`.devcontainer/*/devcontainer.json`* in the `"settings"` section as *.vscode/settings.json* take precedence over the settings defined in *.devcontainer/devcontainer.json*.
 1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P) and select `Dev Containers: Open Folder in Container...` and choose your project directory
+
+## Non-root user
+
+The image runs using an unprivileged account `user`.
+
+💁 In case you need root access, see [the root user section](#root-user)
+
+The non root user is configurable with container build arguments, defined both in Dockerfiles and in devcontainer.json files:
+
+| Build argument | Default | Description |
+| --- | --- | --- |
+| `USERNAME` | `user` | account name, home is `/home/$USERNAME`. Update the `"remoteUser"` key and mount targets in `devcontainer.json` to match this one if changed. |
+| `GROUP_NAME` | `user` | name of the account's primary group |
+| `USER_UID` | `1000` | user ID of the account |
+| `USER_GID` | `1000` | group ID of the account's primary group (`$GROUP_NAME`) |
+| `DOCKER_GID` | | create a `docker` group with this GID and put the account in it, to reach a rootful engine's socket, see [Container engine socket](#container-engine-socket) |
+
+The unprivileged account:
+
+- owns its home, and the state directories of the package manager, so it can install and remove packages without `sudo` or `doas`
+- can write to a directory a package may add or remove a file in (`/usr/local/bin`, `/etc/ssl/certs`, `/var/log`...), which all belong to `$GROUP_NAME` and are group-writable.
+- can only read and execute files installed in the container image and setup by the container engine
+- cannot read `/root` and `/etc/shadow`
+
+On system package management, note:
+
+- it cannot replace a file the image already has installed, since those keep their root ownership
+- for the Debian container, some packages have maintainer scripts that insist on running as root, and will fail to install (i.e. `dbus`); the fix is to finish the job as root for example `docker exec --user root <container-name> sh -c 'apt-get install -y dbus && dpkg --configure -a'`
+
+## Root user
+
+If you need to run a command as root, exec in the container using for example
+
+```sh
+docker exec --user root <container-name> command
+```
+
+Root has the same terminal setup as the unprivileged account, given all the configuration files are symlinked into `/home/user`.
+Note however that by default the zsh historyand ssh files are not symlinked or copied from the unprivileged user to root.
+The shell prints `Running as root` at startup, so you always know which account a terminal belongs to.
 
 ## More
 
@@ -132,10 +174,12 @@ You can build and extend the Docker development image to suit your needs.
         RUN apk add bind-tools
         ```
 
+       Use `USER root` before instructions that do need root, and `USER user` to give it back.
+
     1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P)
     1. Select `Dev-Containers: Rebuild Container`
 
-- You can bind mount a file at `/root/.welcome.sh` to modify the welcome message.
+- You can bind mount a file at `/home/user/.welcome.sh` to modify the welcome message.
 
 ### SSH keys
 
