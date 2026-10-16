@@ -1,0 +1,196 @@
+# Shared checks for the dev container, called as a job by Alpine and Debian
+# (see their verify job). It is not triggerable on its own: the callers keep
+# their own triggers, so a change to alpine.Dockerfile only runs the Alpine
+# copy of these jobs, and .devcontainer/** changes run both.
+name: Devcontainer
+
+on:
+  workflow_call:
+    inputs:
+      dockerfile:
+        description: Dockerfile to build the dev container base image from
+        required: true
+        type: string
+
+env:
+  # Tagged :latest because .devcontainer/Dockerfile is FROM
+  # ghcr.io/qdm12/basedevcontainer: the dev container must be built from the
+  # Dockerfile under test, not from the published image, which lags behind
+  # master. Nothing is pushed, the tag only ever exists on that runner.
+  IMAGE: ghcr.io/qdm12/basedevcontainer:latest
+
+jobs:
+  jsonc:
+    name: JSONC syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install jsonc-parser
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund \
+            jsonc-parser@3.3.1
+
+      # The devcontainer CLI parses with jsonc-parser in recovery mode: it
+      # repairs malformed JSON silently and ignores unknown properties, so it
+      # cannot be the syntax check itself.
+      - name: Check devcontainer.json files
+        run: node .github/scripts/check-jsonc.mjs
+
+  build-image:
+    name: Build image
+    needs: [jsonc]
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: "1"
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Build image
+        run: docker build -f "${{ inputs.dockerfile }}" -t "$IMAGE" .
+
+      # Both engines of the matrix below load this artifact instead of building:
+      # they keep separate image stores and cannot share a build cache.
+      - name: Export image
+        run: docker save "$IMAGE" | gzip -1 > "$RUNNER_TEMP/image.tar.gz"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: devcontainer-image
+          path: ${{ runner.temp }}/image.tar.gz
+          compression-level: 0
+          retention-days: 1
+
+  devcontainer-up:
+    name: devcontainer up (${{ matrix.engine }})
+    needs: [jsonc, build-image]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [docker, podman]
+    env:
+      DEVCONTAINER_CLI_VERSION: "0.89.0"
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: devcontainer-image
+          path: ${{ runner.temp }}
+
+      # GitHub runners ship Docker only, so Podman has to be installed before
+      # it can be part of the matrix.
+      - name: Install Podman
+        if: ${{ matrix.engine == 'podman' }}
+        run: |
+          set -eu
+          if command -v podman > /dev/null 2>&1; then
+              echo "Podman present: $(podman --version)"
+          else
+              sudo apt-get update
+              sudo apt-get install -y --no-install-recommends podman
+              echo "Installed: $(podman --version)"
+          fi
+          # Rootless Podman needs an unused subuid/subgid range for the user,
+          # which the runner account is not guaranteed to have.
+          if ! podman unshare id > /dev/null 2>&1; then
+              sudo usermod --add-subuids 100000-165535 \
+                --add-subgids 100000-165535 "$(id -un)"
+              podman unshare id
+          fi
+
+      # Isolated home directory for the steps below, so the bind mounted
+      # ~/.gitconfig, ~/.zsh_history, ~/AGENTS.md, ~/.ssh/* and
+      # ~/.config/containers/auth.json come from mock files instead of the
+      # runner's. Rootless Podman keeps its image store under $HOME too, so it
+      # has to be the same value in every step, and the loaded image stays
+      # visible to them all.
+      - name: Load image
+        run: |
+          set -eu
+          export HOME="$RUNNER_TEMP/devcontainer-home"
+          mkdir -p "$HOME"
+          if [ "${{ matrix.engine }}" = docker ]; then
+              docker load -i "$RUNNER_TEMP/image.tar.gz"
+          else
+              # Rootless Podman, as .devcontainer/podman/devcontainer.json
+              # expects: it mounts ${XDG_RUNTIME_DIR}/podman/podman.sock.
+              # A runner has no login session, so /run/user/$UID is missing and
+              # the API socket has to be created by hand, since a bind mount
+              # refuses a source path which does not exist.
+              xdg_runtime_dir="/run/user/$(id -u)"
+              export XDG_RUNTIME_DIR="$xdg_runtime_dir"
+              echo "XDG_RUNTIME_DIR=$xdg_runtime_dir" >> "$GITHUB_ENV"
+              # Both directories have to belong to the runner user: mkdir -p
+              # leaves the podman/ subdirectory owned by root, and the rootless
+              # API service cannot bind its socket inside a root-owned path.
+              sudo install -d -o "$(id -u)" -g "$(id -g)" -m 700 \
+                  "$xdg_runtime_dir" "$xdg_runtime_dir/podman"
+              podman load -i "$RUNNER_TEMP/image.tar.gz"
+              socket_uri="unix://$xdg_runtime_dir/podman/podman.sock"
+              # No systemd user session on a runner, so start the API service
+              # directly (deprecated by Podman 5's podman socket, which the
+              # runners' Podman may not offer yet).
+              setsid podman system service --time=0 "$socket_uri" \
+                > "$RUNNER_TEMP/podman-service.log" 2>&1 < /dev/null &
+              # With a deadline: a socket which never comes up must fail the job
+              # with the service log, not hang until the job timeout.
+              socket_ready=no
+              for _attempt in $(seq 60); do
+                  if podman --url "$socket_uri" version > /dev/null 2>&1; then
+                      socket_ready=yes
+                      break
+                  fi
+                  sleep 1
+              done
+              if [ "$socket_ready" != yes ]; then
+                  cat "$RUNNER_TEMP/podman-service.log" || true
+                  echo "no Podman API socket at $socket_uri"
+                  exit 1
+              fi
+              podman --url "$socket_uri" version
+          fi
+
+      - name: Create mock host files for the bind mounts
+        run: |
+          set -eu
+          export HOME="$RUNNER_TEMP/devcontainer-home"
+          mkdir -p "$HOME"
+          scripts_dir="$GITHUB_WORKSPACE/.github/scripts"
+          bash "$scripts_dir/ci-prepare-devcontainer-host.sh" >> "$GITHUB_ENV"
+
+      # --skip-post-create skips ~/.ssh.sh (postCreateCommand), which needs a
+      # real SSH setup: this job only checks that a container starts.
+      # DOCKER_GID is left empty, so no docker group is added to the image and
+      # the mounted engine socket is out of reach for the container's user.
+      - name: Start the dev container
+        run: |
+          set -euo pipefail
+          export HOME="$RUNNER_TEMP/devcontainer-home"
+          engine="${{ matrix.engine }}"
+          devcontainer_dir="$GITHUB_WORKSPACE/.devcontainer"
+          up_log="$RUNNER_TEMP/devcontainer-up.log"
+          # One merged stream, stdout kept as a pipe: the result JSON is printed
+          # on stderr, and on local rootless Podman the CLI hung when its stdout
+          # was a regular file, so tee is not decoration. pipefail keeps tee
+          # from masking a failing CLI, and the deadline bounds a stalled run.
+          timeout --kill-after=60s 20m \
+            npx --yes "@devcontainers/cli@$DEVCONTAINER_CLI_VERSION" up \
+              --workspace-folder "$GITHUB_WORKSPACE" \
+              --config "$devcontainer_dir/$engine/devcontainer.json" \
+              --docker-path "$engine" \
+              --remove-existing-container \
+              --skip-post-create \
+              --no-lockfile \
+              2>&1 | tee "$up_log"
+          node .github/scripts/assert-devcontainer-up.mjs "$up_log"
