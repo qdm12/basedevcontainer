@@ -1,0 +1,166 @@
+# Composite action, not a reusable workflow step: the steps of a reusable
+# workflow run against the caller's checkout, so only an action carries its own
+# files to another repository (through github.action_path).
+#
+# The image to start from is not an input: the caller's dev container
+# Dockerfile names it in its FROM, and the archive below only has to make it
+# known to the engine store.
+name: Devcontainer up
+description: >-
+  Start a dev container with the dev container CLI, with Docker or with rootless
+  Podman, from an image archive exported by a previous job, and check that the
+  CLI reported success.
+author: qdm12
+
+inputs:
+  engine:
+    description: Container engine to start the dev container with, docker or podman
+    required: true
+  archive:
+    description: Path of the image archive (docker save output) to load
+    required: false
+    default: ${{ runner.temp }}/image.tar.gz
+  config_dir:
+    description: >-
+      Directory holding the <engine>/devcontainer.json files, relative to the
+      workspace
+    required: false
+    default: .devcontainer
+  cli_version:
+    description: Version of @devcontainers/cli to run
+    required: false
+    default: "0.89.0"
+  timeout:
+    description: Deadline for a single devcontainer up run
+    required: false
+    default: 20m
+  skip_post_create:
+    description: >-
+      Skip the postCreateCommand, which needs a real SSH setup on the host
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    # GitHub runners ship Docker only, so Podman has to be installed before
+    # it can be part of the matrix.
+    - name: Install Podman
+      if: ${{ inputs.engine == 'podman' }}
+      shell: bash
+      run: |
+        set -eu
+        if command -v podman > /dev/null 2>&1; then
+            echo "Podman present: $(podman --version)"
+        else
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends podman
+            echo "Installed: $(podman --version)"
+        fi
+        # Rootless Podman needs an unused subuid/subgid range for the user,
+        # which the runner account is not guaranteed to have.
+        if ! podman unshare id > /dev/null 2>&1; then
+            sudo usermod --add-subuids 100000-165535 \
+              --add-subgids 100000-165535 "$(id -un)"
+            podman unshare id
+        fi
+
+    - name: Load the image
+      shell: bash
+      env:
+        ENGINE: ${{ inputs.engine }}
+        ARCHIVE: ${{ inputs.archive }}
+      run: |
+        set -eu
+        # Isolated home directory, shared by the three steps below: the bind
+        # mounted ~/.gitconfig, ~/.zsh_history, ~/AGENTS.md, ~/.ssh/* and
+        # ~/.config/containers/auth.json come from mock files there instead of
+        # the runner's, and rootless Podman keeps its image store under $HOME,
+        # so the image loaded here stays visible to the later steps.
+        # Exported per step (and not through GITHUB_ENV) because every step of a
+        # composite action is its own process.
+        export HOME="$RUNNER_TEMP/devcontainer-home"
+        mkdir -p "$HOME"
+        if [ "$ENGINE" = docker ]; then
+            docker load -i "$ARCHIVE"
+        else
+            # Rootless Podman, as .devcontainer/podman/devcontainer.json
+            # expects: it mounts ${XDG_RUNTIME_DIR}/podman/podman.sock.
+            # A runner has no login session, so /run/user/$UID is missing and
+            # the API socket has to be created by hand, since a bind mount
+            # refuses a source path which does not exist.
+            xdg_runtime_dir="/run/user/$(id -u)"
+            export XDG_RUNTIME_DIR="$xdg_runtime_dir"
+            echo "XDG_RUNTIME_DIR=$xdg_runtime_dir" >> "$GITHUB_ENV"
+            # Both directories have to belong to the runner user: mkdir -p
+            # leaves the podman/ subdirectory owned by root, and the rootless
+            # API service cannot bind its socket inside a root-owned path.
+            sudo install -d -o "$(id -u)" -g "$(id -g)" -m 700 \
+                "$xdg_runtime_dir" "$xdg_runtime_dir/podman"
+            podman load -i "$ARCHIVE"
+            socket_uri="unix://$xdg_runtime_dir/podman/podman.sock"
+            # No systemd user session on a runner, so start the API service
+            # directly (deprecated by Podman 5's podman socket, which the
+            # runners' Podman may not offer yet).
+            setsid podman system service --time=0 "$socket_uri" \
+              > "$RUNNER_TEMP/podman-service.log" 2>&1 < /dev/null &
+            # With a deadline: a socket which never comes up must fail the job
+            # with the service log, not hang until the job timeout.
+            socket_ready=no
+            for _attempt in $(seq 60); do
+                if podman --url "$socket_uri" version > /dev/null 2>&1; then
+                    socket_ready=yes
+                    break
+                fi
+                sleep 1
+            done
+            if [ "$socket_ready" != yes ]; then
+                cat "$RUNNER_TEMP/podman-service.log" || true
+                echo "no Podman API socket at $socket_uri"
+                exit 1
+            fi
+            podman --url "$socket_uri" version
+        fi
+
+    - name: Create mock host files for the bind mounts
+      shell: bash
+      run: |
+        set -eu
+        export HOME="$RUNNER_TEMP/devcontainer-home"
+        action_dir="${{ github.action_path }}"
+        bash "$action_dir/prepare-devcontainer-host.sh" >> "$GITHUB_ENV"
+
+    # DOCKER_GID is left empty by the caller, so no docker group is added to
+    # the image and the mounted engine socket stays out of reach for the
+    # container's user.
+    - name: Start the dev container
+      shell: bash
+      env:
+        ENGINE: ${{ inputs.engine }}
+        CONFIG_DIR: ${{ inputs.config_dir }}
+        CLI_VERSION: ${{ inputs.cli_version }}
+        TIMEOUT: ${{ inputs.timeout }}
+        SKIP_POST_CREATE: ${{ inputs.skip_post_create }}
+      run: |
+        set -euo pipefail
+        export HOME="$RUNNER_TEMP/devcontainer-home"
+        action_dir="${{ github.action_path }}"
+        up_args=(
+          --workspace-folder "$GITHUB_WORKSPACE"
+          --config "$GITHUB_WORKSPACE/$CONFIG_DIR/$ENGINE/devcontainer.json"
+          --docker-path "$ENGINE"
+          --remove-existing-container
+          --no-lockfile
+        )
+        if [ "$SKIP_POST_CREATE" = true ]; then
+            up_args+=(--skip-post-create)
+        fi
+        # One merged stream, stdout kept as a pipe: the result JSON is printed
+        # on stderr, and on local rootless Podman the CLI hung when its stdout
+        # was a regular file, so tee is not decoration. pipefail keeps tee
+        # from masking a failing CLI, and the deadline bounds a stalled run.
+        up_log="$RUNNER_TEMP/devcontainer-up.log"
+        timeout --kill-after=60s "$TIMEOUT" \
+          npx --yes "@devcontainers/cli@$CLI_VERSION" up "${up_args[@]}" \
+          2>&1 | tee "$up_log"
+        node "$action_dir/assert-devcontainer-up.mjs" "$up_log"

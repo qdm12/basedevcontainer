@@ -1,0 +1,27 @@
+# Composite action, not a reusable workflow step: the steps of a reusable
+# workflow run against the caller's checkout, so only an action carries its own
+# files to another repository (through github.action_path).
+name: Devcontainer JSONC check
+description: >-
+  Report every JSONC syntax error of the devcontainer.json files of the
+  repository calling this action.
+author: qdm12
+
+runs:
+  using: composite
+  steps:
+    - name: Install jsonc-parser
+      shell: bash
+      # Installed next to the script and not in the workspace: Node resolves a
+      # bare import from the importing file upwards, and a cross-repository
+      # action is checked out outside of the caller's workspace.
+      run: |
+        npm install --no-save --no-package-lock --no-audit --no-fund \
+          --prefix "${{ github.action_path }}" jsonc-parser@3.3.1
+
+    # The devcontainer CLI parses with jsonc-parser in recovery mode: it
+    # repairs malformed JSON silently and ignores unknown properties, so it
+    # cannot be the syntax check itself.
+    - name: Check devcontainer.json files
+      shell: bash
+      run: node "${{ github.action_path }}/check-jsonc.mjs"

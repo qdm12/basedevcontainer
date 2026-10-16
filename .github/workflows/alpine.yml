@@ -9,7 +9,7 @@ on:
     paths:
       - .github/workflows/alpine.yml
       - .github/workflows/devcontainer.yml
-      - .github/scripts/**
+      - .github/actions/**
       - .devcontainer/**
       - shell/**
       - .dockerignore
@@ -19,7 +19,7 @@ on:
     paths:
       - .github/workflows/alpine.yml
       - .github/workflows/devcontainer.yml
-      - .github/scripts/**
+      - .github/actions/**
       - .devcontainer/**
       - shell/**
       - .dockerignore

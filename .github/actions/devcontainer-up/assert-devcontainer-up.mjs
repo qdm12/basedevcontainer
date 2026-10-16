@@ -5,7 +5,7 @@
 // log is scanned backwards for the outermost JSON object rather than trusting
 // one stream. `set -o pipefail` covers a non zero exit of the CLI itself.
 //
-// Usage: node .github/scripts/assert-devcontainer-up.mjs <log file>
+// Usage: node .github/actions/devcontainer-up/assert-devcontainer-up.mjs <log file>
 // Exit code is 1 when the log holds no result, or a result other than success.
 
 import { readFile } from "node:fs/promises";

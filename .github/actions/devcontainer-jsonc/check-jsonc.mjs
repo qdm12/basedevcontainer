@@ -5,7 +5,7 @@
 // unknown top level properties are ignored, so it cannot be used as a lint step.
 // This script reports every syntax error instead, with the offending line.
 //
-// Usage: node .github/scripts/check-jsonc.mjs [file...]
+// Usage: node .github/actions/devcontainer-jsonc/check-jsonc.mjs [file...]
 // Defaults to every devcontainer.json under .devcontainer.
 // Exit code is 1 when at least one file has a syntax error.
 
