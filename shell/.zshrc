@@ -11,7 +11,10 @@ POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 ZSH_THEME="powerlevel10k/powerlevel10k"
 ENABLE_CORRECTION="false"
 COMPLETION_WAITING_DOTS="true"
+# Plugins are read by oh-my-zsh when it loads, at the bottom of this file, so a consumer image can
+# drop a ~/.zshrc-plugins file to change the list (e.g. plugins=($plugins golang)) before that load.
 plugins=(vscode git colorize docker docker-compose)
+[ -f ~/.zshrc-plugins ] && source ~/.zshrc-plugins
 unsetopt HIST_SAVE_BY_COPY # Tell zsh to write directly to the file
 
 # TODO Ascii art

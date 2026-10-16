@@ -181,6 +181,15 @@ You can build and extend the Docker development image to suit your needs.
 
 - You can bind mount a file at `/home/user/.welcome.sh` to modify the welcome message.
 
+- You can change the [oh-my-zsh plugins](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins) loaded at shell startup by dropping a `~/.zshrc-plugins` file. It is sourced before oh-my-zsh reads the `plugins` variable, so it can replace or extend the default list. For example, to add Go plugins in a child image:
+
+    ```Dockerfile
+    FROM ghcr.io/qdm12/basedevcontainer
+    RUN echo 'plugins=($plugins golang)' > /home/user/.zshrc-plugins
+    ```
+
+    Setting `plugins` in `~/.zshrc-specific` has no effect: that file is sourced after oh-my-zsh has loaded the plugins, so it is for aliases and environment variables.
+
 ### SSH keys
 
 You can either use an SSH agent (preferred, more secure) or bind mount your `~/.ssh` directory at `/mnt/ssh`, or not use SSH at all. See the [.devcontainer/README.md#SSH-keys](.devcontainer/README.md) for more information.
