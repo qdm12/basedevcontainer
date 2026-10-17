@@ -35,7 +35,10 @@
         }
     },
     "runArgs": [
-        // Note host.docker.internal is automatically set in Podman
+        // Note:
+        // - host.containers.internal is automatically set in Podman since Podman v3.1.0
+        // - host.docker.internal is automatically set in Podman from Podman v4.7.0
+        // - using `host-gateway` in `--add-host ` is supported since Podman v4.7.0
         // ---
         // Run the container's uid 1000 as the host's uid 1000: the podman API socket
         // belongs to the host user, and files bind-mounted from the host keep working
