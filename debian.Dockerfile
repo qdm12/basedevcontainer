@@ -43,6 +43,11 @@ RUN apt-get update -y && \
     rm -r /var/cache/* /var/lib/apt/lists/*
 ENV TZ=
 
+# Xclip to copy/paste from/to the container
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends xclip && \
+    rm -r /var/cache/* /var/lib/apt/lists/*
+
 # Unprivileged user the container runs as.
 ARG USERNAME=user
 ARG GROUP_NAME=user

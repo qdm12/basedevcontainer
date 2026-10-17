@@ -39,6 +39,9 @@ RUN apk add -q --update --progress --no-cache ca-certificates
 RUN apk add -q --update --progress --no-cache tzdata
 ENV TZ=
 
+# Xclip to copy/paste from/to the container
+RUN apk add -q --update --progress --no-cache xclip
+
 # Unprivileged user the container runs as.
 ARG USERNAME=user
 ARG GROUP_NAME=user
