@@ -244,29 +244,27 @@ See [podman/devcontainer.json](podman/devcontainer.json) for the Podman engine.
 
 #### Setup the devcontainer
 
-To create the devcontainer, the extension shells out to a CLI specified by VSCode's setting `dev.containers.dockerPath`. On a Podman host, this must be set to a Podman **Docker-compatible API**, not at the `podman` CLI:
+To create the devcontainer, the extension shells out to the CLI named by VSCode's setting `dev.containers.dockerPath`. Point it at the **`podman` CLI**, as an **absolute path**.
 
 ```jsonc
-"dev.containers.dockerPath": "~/.local/lib/podman-docker/bin/docker",
-"dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
+"dev.containers.dockerPath": "/usr/bin/podman",
 ```
 
-Where `~/.local/lib/podman-docker/bin/docker` is the client-only Docker CLI (no daemon), for example you can set it up with:
+Nothing else needs to point at the engine: `podman` carries its own connection configuration (the rootless socket at `${XDG_RUNTIME_DIR}/podman/podman.sock` by default, or a `podman system connection`), so no socket path or Docker host setting is involved.
 
-```sh
-mkdir -p ~/.local/lib/podman-docker/bin
-curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-29.9.0.tgz |
-    tar -xz -C /tmp docker/docker
-install -m 755 /tmp/docker/docker ~/.local/lib/podman-docker/bin/docker
+⚠️ Podman must log events to a **file**, set once on the host in `~/.config/containers/containers.conf`:
+
+```toml
+[engine]
+events_logger = "file"
 ```
 
-`DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock` has to be visible to the extension;
-its user-env probe reads the login shell, so the export in `~/.profile` is enough.
+Right after `podman run`, the Dev Containers CLI waits for the container `start` event on a `podman events --filter event=start` stream it started a millisecond earlier. The `podman` CLI has to initialize its database before it subscribes, so the event lands first - and the journald logger, rootless Podman's default, keeps no replayable log to recover it from, so the window hangs forever at `Container started`. A file-backed log is replayable, so the event is never lost. References: [devcontainers/cli#1236](https://github.com/devcontainers/cli/issues/1236), [microsoft/vscode-remote-release#7980](https://github.com/microsoft/vscode-remote-release/issues/7980).
 
-💁 Why not `"dev.containers.dockerPath": "podman"`: right after `podman run`, the Dev Containers CLI waits for the container `start` event on a `podman events --filter event=start` stream it started a millisecond earlier. The `podman` CLI has to initialise its database before it subscribes, so the event lands first; and for a local engine the CLI has no polling fallback, so the window hangs at `Container started`.
+💁 Why the `podman` CLI and not a Docker CLI against Podman's API: `--userns=keep-id` in [devcontainer.json](podman/devcontainer.json) `runArgs` is a Podman user namespace mode. A Docker CLI has `--userns` too, but validates its value client-side and rejects everything but `host` (`docker: --userns: invalid USER mode`), so `keep-id` never reaches Podman - and Podman's Docker-compatible API ignores `UsernsMode` altogether, so even `--userns=host` through that API is a no-op. Without the user namespace mapping, the container's uid 1000 is the host's `subuid+999`: files written in the bind-mounted workspace land outside your uid, and the bind-mounted Podman socket (mode `0660`, your user only) is unreachable from inside.
 
 #### Host engine access
 
-It mounts the host's `${XDG_RUNTIME_DIR}/podman/podman.sock` at the canonical `/var/run/docker.sock` inside the container. If your editor server does not export the environment variable `XDG_RUNTIME_DIR`, hardcode it in the [devcontainer.json](podman/devcontainer.json) mounts to the value given by running `echo "/run/user/$(id -u)"`
+It mounts the host's `${XDG_RUNTIME_DIR}/podman/podman.sock` at the canonical `/var/run/docker.sock` inside the container. If your editor server does not export the environment variable `XDG_RUNTIME_DIR`, hardcode it in the [devcontainer.json](podman/devcontainer.json) mounts to the value given by running `echo "/run/user/$(id -u)"`. That way all `docker`, `docker compose` (default docker socket path) and `podman` (using `CONTAINER_HOST`) all work using the same socket path.
 
 The Docker buildx plugin is not supported by a Podman host, so `DOCKER_BUILDKIT=0` is set. Cross building is still possible.
