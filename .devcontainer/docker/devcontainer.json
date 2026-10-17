@@ -27,7 +27,11 @@
         }
     },
     "runArgs": [
-        "--add-host=host.docker.internal:host-gateway"
+        // Set `host.docker.internal` to match Docker Desktop setups, in case this is running
+        // without Docker desktop using dockerd only.
+        "--add-host=host.docker.internal:host-gateway",
+        // Set `host.containers.internal` to match Podman setups to simplify cross engine configuration
+        "--add-host=host.containers.internal:host-gateway"
         // A rootful dockerd socket belongs to root:docker, so the unprivileged user needs
         // its group to reach it. Grant it without rebuilding the image by uncommenting
         // and adapting this line to the group ID of the socket
