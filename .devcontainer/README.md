@@ -27,7 +27,6 @@ It works on Linux, Windows (WSL2) and OSX.
     - The Docker daemon socket `/var/run/docker.sock` (for [./docker](./docker)) or the Podman socket `${XDG_RUNTIME_DIR}/podman/podman.sock` (for [./podman](./podman))
 
     You can alternatively modify the mounts in `devcontainer.json` to suit your needs.
-
 1. The container runs as an unprivileged user with uid `1000` and gid `1000` by default. Any bind mounts from the host should therefore be writable and/or readable by that group id and/or user id, including your workspace. A quick way to do so is with the following shell commands on the host, from the workspace:
 
     ```sh
@@ -234,8 +233,8 @@ It builds and cross-builds using the docker plugin buildx.
 
 A rootful dockerd socket belongs to `root:docker`, so the unprivileged user needs that group to open it. You have two options:
 
-- Uncomment `// --group-add=$(stat -c %g /var/run/docker.sock)` in the `runArgs` key in [.devcontainer/docker/devcontainer.json](.devcontainer/docker/devcontainer.json)
-- Set your host environment variable `export DOCKER_GID=$(stat -c %g /var/run/docker.sock)` and rebuild the container image. The [.devcontainer/docker/devcontainer.json](.devcontainer/docker/devcontainer.json) already uses the host `DOCKER_GID` variable as its `DOCKER_GID` build argument.
+- Uncomment `// --group-add=$(stat -c %g /var/run/docker.sock)` in the `runArgs` key in [.devcontainer/docker/devcontainer.json](docker/devcontainer.json)
+- Set your host environment variable `export DOCKER_GID=$(stat -c %g /var/run/docker.sock)` and rebuild the container image. The [.devcontainer/docker/devcontainer.json](docker/devcontainer.json) already uses the host `DOCKER_GID` variable as its `DOCKER_GID` build argument.
 
 **Docker Desktop / OrbStack / Colima**: their socket is world-writable, nothing to do.
 
