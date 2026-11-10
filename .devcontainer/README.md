@@ -133,6 +133,12 @@ This is **not the default** so `devcontainer.json` needs the following changes:
     },
     ```
 
+    ```jsonc
+    "terminal.integrated.env.linux": {
+        "SSH_AUTH_SOCK": "/tmp/ssh-agent.sock"
+    },
+    ```
+
 1. Uncomment by removing `//`:
 
     ```jsonc
@@ -173,6 +179,14 @@ and all the ssh mounts in `devcontainer.json`:
     "source": "${localEnv:HOME}/.ssh/allowed_signers",
     "target": "/home/user/.ssh/allowed_signers",
     "type": "bind,readonly"
+},
+```
+
+and
+
+```jsonc
+"terminal.integrated.env.linux": {
+    "SSH_AUTH_SOCK": "/tmp/ssh-agent.sock"
 },
 ```
 

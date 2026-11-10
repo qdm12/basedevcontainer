@@ -160,9 +160,10 @@
                 "ms-azuretools.vscode-docker"
             ],
             "settings": {
-                // General settings
                 "files.eol": "\n",
-                // Docker settings
+                "terminal.integrated.env.linux": {
+                    "SSH_AUTH_SOCK": "/tmp/ssh-agent.sock"
+                },
                 "remote.extensionKind": {
                     "ms-azuretools.vscode-docker": "workspace"
                 }
