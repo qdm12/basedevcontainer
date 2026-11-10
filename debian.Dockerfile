@@ -43,6 +43,11 @@ RUN apt-get update -y && \
     rm -r /var/cache/* /var/lib/apt/lists/*
 ENV TZ=
 
+# AI agent tools
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends jq curl ripgrep grep && \
+    rm -r /var/cache/* /var/lib/apt/lists/*
+
 # Xclip to copy/paste from/to the container
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends xclip && \

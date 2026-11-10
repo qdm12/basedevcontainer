@@ -39,6 +39,9 @@ RUN apk add -q --no-cache ca-certificates
 RUN apk add -q --no-cache tzdata
 ENV TZ=
 
+# AI agent tools
+RUN apk add -q --no-cache jq curl ripgrep grep
+
 # Xclip to copy/paste from/to the container
 RUN apk add -q --no-cache xclip
 
