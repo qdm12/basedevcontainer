@@ -33,14 +33,14 @@ LABEL \
 ENV BASE_VERSION="${VERSION}-${CREATED}-${COMMIT}"
 
 # CA certificates
-RUN apk add -q --update --progress --no-cache ca-certificates
+RUN apk add -q --no-cache ca-certificates
 
 # Timezone
-RUN apk add -q --update --progress --no-cache tzdata
+RUN apk add -q --no-cache tzdata
 ENV TZ=
 
 # Xclip to copy/paste from/to the container
-RUN apk add -q --update --progress --no-cache xclip
+RUN apk add -q --no-cache xclip
 
 # Unprivileged user the container runs as.
 ARG USERNAME=user
@@ -68,17 +68,17 @@ RUN set -eux && \
     chmod 700 "${USER_HOME}/.ssh"
 
 # Setup Git and SSH and GPG
-RUN apk add -q --update --progress --no-cache git mandoc git-doc openssh-client gnupg
+RUN apk add -q --no-cache git mandoc git-doc openssh-client gnupg
 COPY --chown="${USER_UID}:${USER_GID}" --chmod=755 .ssh.sh ${USER_HOME}/
 
 # Setup shell for root and ${USERNAME}
 ENTRYPOINT [ "/bin/zsh" ]
-RUN apk add -q --update --progress --no-cache zsh nano zsh-vcs
+RUN apk add -q --no-cache zsh nano zsh-vcs
 ENV EDITOR=nano \
     LANG=en_US.UTF-8 \
     # MacOS compatibility
     TERM=xterm
-RUN apk add -q --update --progress --no-cache shadow && \
+RUN apk add -q --no-cache shadow && \
     usermod --shell /bin/zsh root && \
     apk del shadow
 
@@ -87,7 +87,7 @@ RUN git clone --single-branch --depth 1 https://github.com/robbyrussell/oh-my-zs
     chown -R "${USER_UID}:${USER_GID}" "${USER_HOME}/.oh-my-zsh"
 
 # Powerlevel10k prompt theme, and its configuration
-RUN apk add -q --update --progress --no-cache zsh-theme-powerlevel10k gitstatus && \
+RUN apk add -q --no-cache zsh-theme-powerlevel10k gitstatus && \
     ln -s /usr/share/zsh/plugins/powerlevel10k "${USER_HOME}/.oh-my-zsh/custom/themes/powerlevel10k" && \
     chown -h "${USER_UID}:${USER_GID}" "${USER_HOME}/.oh-my-zsh/custom/themes/powerlevel10k"
 COPY --chown="${USER_UID}:${USER_GID}" shell/.p10k.zsh ${USER_HOME}/
@@ -137,7 +137,7 @@ COPY --chown="${USER_UID}:${USER_GID}" --from=gh /bin /usr/local/bin/gh
 COPY --chown="${USER_UID}:${USER_GID}" --from=devtainr /devtainr /usr/local/bin/devtainr
 
 # VSCode specific (speed up setup)
-RUN apk add -q --update --progress --no-cache libstdc++
+RUN apk add -q --no-cache libstdc++
 
 # Write access needed by apk: apk's own state, and every directory a package may
 # create or remove files in. Existing files keep their root ownership, so they stay
