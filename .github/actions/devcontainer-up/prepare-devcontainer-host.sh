@@ -21,7 +21,7 @@ for file in \
     .zsh_history \
     AGENTS.md \
     .ssh/known_hosts \
-    .ssh/id_ed25519.pub \
+    .ssh/signingkey.pub \
     .ssh/allowed_signers; do
     if [ -e "$HOME/$file" ]; then
         echo "present  $HOME/$file" >&2
