@@ -147,8 +147,7 @@
                 "spikespaz.vscode-smoothtype",
                 "stkb.rewrap",
                 "vscode-icons-team.vscode-icons",
-                "ms-azuretools.vscode-docker",
-                "github.copilot"
+                "ms-azuretools.vscode-docker"
             ],
             "settings": {
                 // General settings
