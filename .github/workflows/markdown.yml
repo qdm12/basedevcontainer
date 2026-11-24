@@ -1,0 +1,49 @@
+name: Markdown
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "**.md"
+      - .github/workflows/markdown.yml
+  pull_request:
+    paths:
+      - "**.md"
+      - .github/workflows/markdown.yml
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  markdown:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    environment: secrets
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: rvben/rumdl@v0
+
+      - uses: reviewdog/action-misspell@v1
+        with:
+          locale: "US"
+          level: error
+          pattern: |
+            *.md
+
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: yes
+          config-file: .github/workflows/configs/mlc-config.json
+
+      - uses: peter-evans/dockerhub-description@v5
+        if: github.repository == 'qdm12/basedevcontainer' && github.event_name == 'push'
+        with:
+          username: qmcgaw
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: qmcgaw/basedevcontainer
+          short-description: Base development container for Visual Studio Code, used as base image by other images
+          readme-filepath: README.md

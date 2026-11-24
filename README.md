@@ -1,8 +1,8 @@
-# Base Dev Container
+# Base dev container
 
 Base Alpine development container for Visual Studio Code, used as base image by other images
 
-<img height="300" src="https://raw.githubusercontent.com/qdm12/basedevcontainer/master/title.svg">
+![Title image](https://raw.githubusercontent.com/qdm12/basedevcontainer/master/title.svg)
 
 [![Alpine](https://github.com/qdm12/basedevcontainer/actions/workflows/alpine.yml/badge.svg)](https://github.com/qdm12/basedevcontainer/actions/workflows/alpine.yml)
 [![Debian](https://github.com/qdm12/basedevcontainer/actions/workflows/debian.yml/badge.svg)](https://github.com/qdm12/basedevcontainer/actions/workflows/debian.yml)
@@ -36,7 +36,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
   - `openssh-client`: use SSH keys
   - `nano`: edit files from the terminal
 - Contains the binaries:
-  - [`gh`](https://github.com/cli/cli): interact with Github with the terminal
+  - [`gh`](https://github.com/cli/cli): interact with GitHub with the terminal
   - `docker`, `podman-remote` (aliased as `podman`)
   - `docker-compose` and `docker compose` docker plugin
   - [`docker buildx`](https://github.com/docker/buildx) docker plugin
@@ -97,7 +97,7 @@ The non root user is configurable with container build arguments, defined both i
 | `GROUP_NAME` | `user` | name of the account's primary group |
 | `USER_UID` | `1000` | user ID of the account |
 | `USER_GID` | `1000` | group ID of the account's primary group (`$GROUP_NAME`) |
-| `DOCKER_GID` | | create a `docker` group with this GID and put the account in it, to reach a rootful engine's socket, see [Container engine socket](#container-engine-socket) |
+| `DOCKER_GID` | | create a `docker` group with this GID and put the account in it, to reach a rootful engine's socket, see [Container engine socket](https://github.com/qdm12/basedevcontainer/blob/master/.devcontainer/README.md#docker-engine) |
 
 The unprivileged account:
 
@@ -125,13 +125,13 @@ The shell prints `Running as root` at startup, so you always know which account 
 
 ## More
 
-### devcontainer.json
+### `devcontainer.json`
 
 - You can change the `"postCreateCommand"` to be relevant to your situation. In example it could be `echo "downloading" && npm i` to combine two commands
 - You can change the extensions installed in the Docker image within the `"extensions"` array
 - VScode settings can be changed or added in the `"settings"` object.
 
-### docker-compose.yml
+### `docker-compose.yml`
 
 You can create a `.devcontainer/docker-compose.yml` to create the devcontainer and other containers at the same time:
 
@@ -176,12 +176,10 @@ You can build and extend the Docker development image to suit your needs.
         ```
 
        Use `USER root` before instructions that do need root, and `USER user` to give it back.
-
     1. Open the command palette in Visual Studio Code (CTRL+SHIFT+P)
     1. Select `Dev-Containers: Rebuild Container`
 
 - You can bind mount a file at `/home/user/.welcome.sh` to modify the welcome message.
-
 - You can change the [oh-my-zsh plugins](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins) loaded at shell startup by dropping a `~/.zshrc-plugins` file. It is sourced before oh-my-zsh reads the `plugins` variable, so it can replace or extend the default list. For example, to add Go plugins in a child image:
 
     ```Dockerfile
@@ -189,7 +187,7 @@ You can build and extend the Docker development image to suit your needs.
     RUN echo 'plugins=($plugins golang)' > /home/user/.zshrc-plugins
     ```
 
-    Setting `plugins` in `~/.zshrc-specific` has no effect: that file is sourced after oh-my-zsh has loaded the plugins, so it is for aliases and environment variables.
+  Setting `plugins` in `~/.zshrc-specific` has no effect: that file is sourced after oh-my-zsh has loaded the plugins, so it is for aliases and environment variables.
 
 ### SSH keys
 

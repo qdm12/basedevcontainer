@@ -21,12 +21,12 @@ It works on Linux, Windows (WSL2) and OSX.
     touch ~/.config/containers/auth.json # Container registry credentials for container engine
     ```
 
-    On top of these files, note by default this container bind mounts:
+   On top of these files, note by default this container bind mounts:
 
     - Some public files from `~/.ssh` (no private key), see the [SSH agent section below](#ssh-agent)
     - The Docker daemon socket `/var/run/docker.sock` (for [./docker](./docker)) or the Podman socket `${XDG_RUNTIME_DIR}/podman/podman.sock` (for [./podman](./podman))
 
-    You can alternatively modify the mounts in `devcontainer.json` to suit your needs.
+   You can alternatively modify the mounts in `devcontainer.json` to suit your needs.
 1. The container runs as an unprivileged user with uid `1000` and gid `1000` by default. Any bind mounts from the host should therefore be writable and/or readable by that group id and/or user id, including your workspace. A quick way to do so is with the following shell commands on the host, from the workspace:
 
     ```sh
@@ -190,7 +190,7 @@ and
 },
 ```
 
-## Github cli `gh`
+## `gh`
 
 1. [Create fine grained personal access token](https://github.com/settings/personal-access-tokens)
 2. Set it on your host environment variable as `GH_TOKEN`:

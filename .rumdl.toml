@@ -1,0 +1,55 @@
+[global]
+disable = ["MD013"]
+# Additional rules to enable on top of defaults
+extend-enable = [
+    "MD060",
+    "MD063",
+    "MD070",
+    "MD072",
+    "MD073",
+    "MD074",
+    "MD080",
+    "MD082",
+    "MD083",
+    "MD084",
+    "MD085",
+    "MD087",
+    "MD088",
+    "MD089",
+    "MD090",
+    "MD091",
+    "MD095",
+]
+
+exclude = [".git"]
+
+# Markdown flavor/dialect
+# See https://github.com/rvben/rumdl#supported-flavors
+flavor = "gfm"
+
+[MD003]
+# Heading style (atx, atx_closed, setext)
+style = "atx"
+
+[MD004]
+# Unordered list style (asterisk, plus, dash, consistent)
+style = "dash"
+
+[MD007]
+# Unordered list indentation
+indent = 2
+
+[MD044]
+# Proper names that should be capitalized correctly
+names = ["Markdown", "GitHub", "Github"]
+
+[MD063]
+# Headings casing
+# https://github.com/rvben/rumdl/blob/main/docs/md063.md
+style = "sentence-case"
+
+[MD076]
+style = "tight"
+
+[MD082]
+allow-parent-headings = true
