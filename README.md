@@ -40,6 +40,7 @@ Base Alpine development container for Visual Studio Code, used as base image by 
   - `docker`, `podman-remote` (aliased as `podman`)
   - `docker-compose` and `docker compose` docker plugin
   - [`docker buildx`](https://github.com/docker/buildx) docker plugin
+  - [`rumdl`](https://github.com/rvben/rumdl) for Markdown linting
   - [`bit`](https://github.com/chriswalz/bit)
   - [`devtainr`](https://github.com/qdm12/devtainr)
 - Custom integrated terminal

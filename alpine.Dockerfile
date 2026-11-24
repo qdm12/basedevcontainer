@@ -6,6 +6,7 @@ ARG BUILDX_VERSION=v0.37.1
 ARG LOGOLS_VERSION=v1.3.7
 ARG BIT_VERSION=v1.1.2
 ARG GH_VERSION=v2.102.0
+ARG RUMDL_VERSION=v0.3.5
 ARG DEVTAINR_VERSION=v0.8.0
 
 FROM ghcr.io/qdm12/binpot:docker-${DOCKER_VERSION} AS docker
@@ -14,6 +15,7 @@ FROM ghcr.io/qdm12/binpot:buildx-${BUILDX_VERSION} AS buildx
 FROM ghcr.io/qdm12/binpot:logo-ls-${LOGOLS_VERSION} AS logo-ls
 FROM ghcr.io/qdm12/binpot:bit-${BIT_VERSION} AS bit
 FROM ghcr.io/qdm12/binpot:gh-${GH_VERSION} AS gh
+FROM ghcr.io/qdm12/binpot:rumdl-${RUMDL_VERSION} AS rumdl
 FROM ghcr.io/qdm12/devtainr:${DEVTAINR_VERSION} AS devtainr
 
 FROM alpine:${ALPINE_VERSION}
@@ -136,6 +138,8 @@ RUN if [ "${TARGETPLATFORM}" != "linux/s390x" ]; then \
     fi
 
 COPY --chown="${USER_UID}:${USER_GID}" --from=gh /bin /usr/local/bin/gh
+
+COPY --chown="${USER_UID}:${USER_GID}" --from=rumdl /bin /usr/local/bin/rumdl
 
 COPY --chown="${USER_UID}:${USER_GID}" --from=devtainr /devtainr /usr/local/bin/devtainr
 
