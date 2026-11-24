@@ -1,0 +1,10 @@
+{
+  "ignorePatterns": [],
+  "timeout": "20s",
+  "retryOn429": false,
+  "fallbackRetryDelay": "30s",
+  "aliveStatusCodes": [
+    200,
+    429
+  ]
+}
